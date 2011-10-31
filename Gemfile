@@ -2,6 +2,8 @@ source :rubygems
 
 gem 'sqlite3-ruby', '~>1.3.0', :require => 'sqlite3'
 gem 'dm-adapter-simpledb', '~>1.5.0'
+gem 'data_mapper', '~>0.10.0'
+
 
 group :devlopment do
   gem 'rspec', '~>2.0.0'
