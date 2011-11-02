@@ -2,7 +2,7 @@ require 'spec_helper.rb'
 require 'graph.rb'
 
 describe Node do
-  describe "Create" do 
+  describe "create" do 
     before :each do  
       max_node = 1e9
       @node = { 

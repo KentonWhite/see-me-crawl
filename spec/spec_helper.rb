@@ -1,12 +1,14 @@
 require 'data_mapper'
 require 'fakeweb'
+require 'factory_girl'
 
-# DataMapper.setup(:default, adapter: 'sqlite3', database: '::memory')   
+FactoryGirl.find_definitions
 
 RSpec.configure do |config|
-  config.before(:all) do
+ config.before(:all) do
     FakeWeb.allow_net_connect = false
     DataMapper.setup(:default, adapter: 'sqlite3', database: ':memory:') 
+    DataMapper.setup(:local, adapter: 'sqlite3', database: ':memory:') 
   end
 
   config.before(:each) do

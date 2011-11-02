@@ -1,12 +1,5 @@
 require 'data_mapper'
 
-DataMapper.setup(:default, 
-  adapter:    'simpledb',
-  access_key: 'AKIAJOOPW5QN4DZJG2BA',
-  secret_key: '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',
-  domain:     'gertrude-stein-tw'
-)
-
 class Node
   include DataMapper::Resource
 
