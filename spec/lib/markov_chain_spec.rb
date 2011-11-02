@@ -52,4 +52,11 @@ describe MarkovChain do
       expect { @mc.select_candidate(@current_node) }.to raise_error(MarkovChain::NoValidNextNode)
     end
   end
+  
+  describe 'acceptance_probability' do
+    it 'should raise an error' do
+      @mc = MarkovChain.new
+      expect { @mc.acceptance_probability(mock(:BaseNode), mock(:BaseNode)) }.to raise_error(MarkovChain::MethodNotImplemented)
+    end
+  end
 end
