@@ -18,7 +18,7 @@ sample = ZSample.new
 previous_node = TwitterNode.new(sample.last_node)
 
 until sample.converged?
-  current_node = TwitterNode.new(markov_chain.next(previous_node))
+  current_node = markov_chain.next(previous_node)
   current_node.populate!
   current_node.save!
   sample.save!(current_node) { |node| node.degree }
