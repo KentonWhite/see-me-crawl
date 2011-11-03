@@ -29,13 +29,26 @@ class BaseNode
   
   def new_node(id)
     self.class.new(id)
-  end
+  end 
   
-  private
+  protected
   
   def populated?
     @populated
   end
+  
+  def save!
+    n = Node.first(id: id)
+    params = columns.reduce({}) { |h,p| h[p] = self.send(p); h }
+    params[:visited_at] = DateTime.now 
+    if n
+      n.update(params)
+    else
+      Node.create(params)      
+    end
+  end
+
+  private
   
   def populate_from_db
     n = Node.first(id: id)

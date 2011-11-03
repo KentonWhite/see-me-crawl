@@ -1,0 +1,104 @@
+---
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: https://api.twitter.com:443/1/users/show.json?user_id=16450138
+    body: !!null 
+    headers:
+      accept:
+      - application/json
+      user-agent:
+      - Twitter Ruby Gem 1.7.2
+      authorization:
+      - OAuth oauth_consumer_key="vu2ILfmWPptGVZzcFQtzIA", oauth_nonce="32b06fd01dd62323c0c4c463cceddf36",
+        oauth_signature="0NKtlFCsuJ4pbEfieBh4qcYo1XM%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1320349136", oauth_token="140442120-yoNDd54g5djiWwaX1EJObNHo48L3Et0XXc1eCXW9",
+        oauth_version="1.0"
+      accept-encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 200
+      message: OK
+    headers:
+      date:
+      - Thu, 03 Nov 2011 19:38:57 GMT
+      status:
+      - 200 OK
+      x-ratelimit-limit:
+      - '350'
+      x-transaction:
+      - 2a6d2698d28627e6
+      etag:
+      - ! '"e5371899f5b88172c7705e55cc7c9cc0"'
+      x-frame-options:
+      - SAMEORIGIN
+      last-modified:
+      - Thu, 03 Nov 2011 19:38:57 GMT
+      x-ratelimit-remaining:
+      - '347'
+      x-runtime:
+      - '0.03353'
+      x-transaction-mask:
+      - a6183ffa5f8ca943ff1b53b5644ef1145155e735
+      content-type:
+      - application/json; charset=utf-8
+      pragma:
+      - no-cache
+      x-access-level:
+      - read-write
+      x-ratelimit-class:
+      - api_identified
+      x-content-type-options:
+      - nosniff
+      x-revision:
+      - DEV
+      expires:
+      - Tue, 31 Mar 1981 05:00:00 GMT
+      cache-control:
+      - no-cache, no-store, must-revalidate, pre-check=0, post-check=0
+      x-ratelimit-reset:
+      - '1320352614'
+      x-mid:
+      - dce62165a4cb7a607ffdd943904870e5bf7d479b
+      set-cookie:
+      - k=10.35.21.120.1320349137249503; path=/; expires=Thu, 10-Nov-11 19:38:57 GMT;
+        domain=.twitter.com
+      - guest_id=v1%3A132034913725248379; domain=.twitter.com; path=/; expires=Sun,
+        03-Nov-2013 07:38:57 GMT
+      - lang=en; path=/
+      - twid=u%3D140442120%7C%2F90gSu%2BX%2FSUDCCFVVfQceE7diws%3D; domain=.twitter.com;
+        path=/
+      - _twitter_sess=BAh7CToPY3JlYXRlZF9hdGwrCHL58GozAToHdWEwOgdpZCIlZmFhZGJmNjRh%250ANGUwZDVhYTE4YWQ2YzliZmY5NjdhNDIiCmZsYXNoSUM6J0FjdGlvbkNvbnRy%250Ab2xsZXI6OkZsYXNoOjpGbGFzaEhhc2h7AAY6CkB1c2VkewA%253D--6290ab4b66034187f5db66662033d22536b26ebc;
+        domain=.twitter.com; path=/; HttpOnly
+      vary:
+      - Accept-Encoding
+      content-encoding:
+      - gzip
+      content-length:
+      - '924'
+      server:
+      - tfe
+    body: !binary |-
+      H4sIAAAAAAAAA6VVbY/bNgz+K5o+7AVLE78lcQIM2PV2vWJD22F3w74EMBSb
+      doSTJU+iL82K/vdScew4bTagWPLBNi2SD5+HpD/wAkrRKswaa0qpgK9LoRxM
+      OMoasn+MJgu/Ew7BavZINvb9nw/sW3YrtCjED3zCT46Zkvopy40yljziNF4m
+      N91bhByhGALnFgQ9ZwLp3OOuZQ/QsGjOwmidLNfBiv0Y0I9FQZCOostaVJC1
+      VmU7xMaR6/G63sw2MyeDKe5lXU1zU29mFy5uMwuDOArpv5jT/cOr7PE+08bW
+      Qk1//f2eUmhR+yIfLYAW7N7Cs0AkewUmI8tWjcCX4tm0ViI4KrXVVEKYnEFu
+      Rf5UWbIXAxHJPAiiXyjaZzx36Ia42qAsZS5QGu0G65W4ONaoxTwzZemAcLwI
+      U6LN53G5lY0PROn/aLUGS3rlh1xJhxNWGlNImDALuXkGK3XFmt3Byfz4ljIW
+      rK68x4N5A4y40BV4zym7e/+iEcheUvlT9pexT0xqJhjJu2MOhcW2YcqYJx9S
+      lNQwx2htjs7nbx2aGqybEhd0Gls35nCZxkSuUcrsyZ2v0bZUn8dXyhH9PSFO
+      FrAVNqMHde65m3S+XPI+DuUa4qdpeKWVTk107CER/58W6gri6w+8USIngXSr
+      1IRbwD0A9jBIHakzC406ZGgy0ok6Lju1328CD7c7oXM48CtD8tY8syBm4XId
+      r9bxchiSMORDnhFRF3mO4DJZ0J3nKYyjII2iZbxaJGEcxEHCLx1IGns+HtG5
+      dDVfeFRGo5XbFo11fY1XMxHlXyQhlmh0PDl80wZBfCvYzkL50+Yswn6/n1I3
+      mdLoTocNpz5VdESbTtRN53t3153qApF6ndXXMaoyTFarJI2TRZgs0nDRjXSP
+      20+yH+QRZx3sz7x81cYWUpMeV4s+scXXPVG0O22rczGOjfDeK/nzSGUm8TvH
+      Ki/0lL0GUTDXSK2P06PIWhy+4R/7ZqZ0f7fgMHPgO+lfxmFLQAlMPxCL25uX
+      i1sqW5lus5DtHaLYiwl793Zy2uGeNJehFdopgd6xX9Qjtb9YhJfNi9WwNXtM
+      RMt4b12uu+PwnagcBFvQrgxjv/TdjioWNNpS01cFshoKKfqlcGUpfsXHoZ9o
+      3EE9XKPNbFtNK1mO8HvFRls8fHVEduyRE1DilfYiFP140zCSSfj1xUHz/0Z6
+      sXvCr0JYWgm6cOe08/jjJ9esLprIBwAA
+    http_version: '1.1'
