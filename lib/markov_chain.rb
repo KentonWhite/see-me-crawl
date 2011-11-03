@@ -5,8 +5,7 @@ class MarkovChain
 
   def next(current_node)
     candidate_node = select_candidate(current_node)
-    rand <= acceptance_probability(current_node, candidate_node) ?
-      candidate_node : current_node
+    choose_node(current_node, candidate_node)
   end
   
   def select_candidate(current_node)
@@ -21,6 +20,16 @@ class MarkovChain
   
   def acceptance_probability(current_node, candidate_node) 
     raise MethodNotImplemented, 'Please implement acceptance_probability in a subclass' 
+  end
+  
+  private
+  
+  def choose_node(current_node, candidate_node)
+    accept?(candidate_node, current_node) ? candidate_node : current_node
+  end 
+  
+  def accept?(candidate_node, current_node)
+    rand <= acceptance_probability(current_node, candidate_node)  
   end
   
 end
