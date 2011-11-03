@@ -19,8 +19,7 @@ previous_node = TwitterNode.new(sample.last_node)
 
 until sample.converged?
   current_node = markov_chain.next(previous_node)
-  current_node.populate!
-  current_node.save!
+  current_node.crawl!
   sample.save!(current_node) { |node| node.degree }
   previous_node = current_node
 end
