@@ -21,4 +21,23 @@ describe Node do
       end
     end
   end 
-end
+end 
+
+describe Edge do
+  describe "create" do 
+    before :each do  
+      max_node = 1e9
+      @edge = { 
+        n1: rand(max_node),
+        n2: rand(max_node)
+      }
+      Edge.create(@edge)
+    end
+
+    %w(n1 n2).each do |attr|
+      it "should have #{attr}" do 
+        Edge.first.send(attr.to_sym).to_s.should == @edge[attr.to_sym].to_s 
+      end
+    end
+  end   
+end   

@@ -9,12 +9,13 @@ RSpec.configure do |config|
     FakeWeb.allow_net_connect = false
     DataMapper.setup(:default, adapter: 'sqlite3', database: ':memory:') 
     DataMapper.setup(:local, adapter: 'sqlite3', database: ':memory:') 
-  end
-
-  config.before(:each) do
     DataMapper.auto_migrate!
   end
 
+  config.before(:each) do
+  end
+
   config.after(:each) do
+    DataMapper.auto_migrate!
   end
 end
