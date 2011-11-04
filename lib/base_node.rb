@@ -53,6 +53,19 @@ class BaseNode
       Node.create(params)      
     end
   end
+  
+  def update_edges(edges) 
+    edges.each do |type, list|
+      new_edges = list - self.send(type)
+      case type
+      when :friends
+        new_edges.each { |n| Edge.create(n1: id, n2: n) }
+      when :followers
+        new_edges.each { |n| Edge.create(n1: n, n2: id) }
+      end
+      self.instance_variable_set("@#{type}", list)
+    end 
+  end
 
   private
   

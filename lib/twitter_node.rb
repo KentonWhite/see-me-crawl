@@ -15,7 +15,17 @@ class TwitterNode < BaseNode
     if !populated? || visited_at < Chronic.parse('1 week ago').to_datetime
       populate_from_twitter
     end
-  end 
+  end
+  
+  def crawl!
+    friends = fetch(:friends)
+    followers = fetch(:followers)
+    update_edges(friends: friends, followers: followers)
+  end
+  
+  def fetch(type)
+
+  end
   
   private
   

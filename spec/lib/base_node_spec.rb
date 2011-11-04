@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'base_node'
-
+require 'graph.rb'
 describe BaseNode do
   before :each do
     max_node = 1e9
@@ -116,5 +116,41 @@ describe BaseNode do
       node = BaseNode.new(rand(1e9))
       expect { node.crawl! }.to raise_error(BaseNode::MethodNotImplemented)
     end
+  end
+  
+  describe 'update_edges' do
+    
+    before :each do
+      @friends = (1..10).map { rand(1e9) }
+      @followers = (1..10).map { rand(1e9) }
+      @node = BaseNode.new(rand(1e9))
+    end   
+    
+    it 'should update friend (outgoing) edges' do
+      @node.send(:update_edges, friends: @friends)
+      @node.friends.should == @friends.sort!
+    end
+
+    it 'should update follower (incoming) edges' do
+      @node.send(:update_edges, followers: @followers)
+      @node.followers.should == @followers.sort!      
+    end
+    
+    it 'should only update the new nodes' do
+      @node.send(:update_edges, friends: @friends.sample(5))
+      @node.send(:update_edges, friends: @friends)
+      @node.friends.should == @friends.sort!            
+    end 
+    
+    it 'should write to db' do
+      @node.send(:update_edges, friends: @friends)
+      Edge.count.should == @friends.size
+    end
+    
+    it 'should cache the result' do
+      @node.send(:update_edges, friends: @friends)
+      @node.instance_variable_get(:@friends).should == @friends.sort!
+    end
+
   end
 end
