@@ -10,6 +10,7 @@ describe Node do
         in_degree:  rand(max_node), 
         out_degree: rand(max_node),
         visited_at: DateTime.now,
+        crawled_at: DateTime.now,
         private:    false
       }
       Node.create(@node)

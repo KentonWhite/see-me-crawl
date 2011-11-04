@@ -27,9 +27,9 @@ class TwitterNode < BaseNode
       @private = false
     rescue Twitter::Unauthorized => e
       @private = true
-      # rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest => e 
-      #   p e.message
-      #   retry
+    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest => e 
+      p e.message
+      retry
     end
     save!
     @populated = true      

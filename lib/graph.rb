@@ -7,6 +7,7 @@ class Node
   property :in_degree,  Integer
   property :out_degree, Integer
   property :visited_at, DateTime
+  property :crawled_at, DateTime
   property :private,    Boolean,  default: false 
 end
 

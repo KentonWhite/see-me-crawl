@@ -11,6 +11,7 @@ FactoryGirl.define do
     in_degree   Kernel.rand(max_node)
     out_degree  Kernel.rand(max_node)
     visited_at  DateTime.now
+    crawled_at  DateTime.now
     private     false
   end
   
