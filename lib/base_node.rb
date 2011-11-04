@@ -46,7 +46,6 @@ class BaseNode
   def save!
     n = Node.first(id: id)
     params = columns.reduce({}) { |h,p| h[p] = self.send(p); h }
-    params[:visited_at] = DateTime.now 
     if n
       n.update(params)
     else
