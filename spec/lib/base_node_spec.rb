@@ -110,4 +110,11 @@ describe BaseNode do
       node.new_node(rand(1e9)).class.should == node.class
     end
   end
+  
+  describe 'crawl!' do
+    it 'should raise an error' do
+      node = BaseNode.new(rand(1e9))
+      expect { node.crawl! }.to raise_error(BaseNode::MethodNotImplemented)
+    end
+  end
 end

@@ -1,6 +1,8 @@
 require './lib/graph.rb'
 
 class BaseNode
+  class MethodNotImplemented < StandardError; end
+  
   def initialize(id)
     @id = id 
     columns.each { |col| self.instance_eval "def #{col}; @#{col}; end" } 
@@ -31,6 +33,10 @@ class BaseNode
     self.class.new(id)
   end 
   
+  def crawl! 
+    raise MethodNotImplemented, 'Please implement crawl! in a subclass' 
+  end
+
   protected
   
   def populated?
