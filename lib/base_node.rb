@@ -8,7 +8,7 @@ class BaseNode
   end 
   
   def degree
-    in_degree.to_i + out_degree.to_i
+    @degree ||= in_degree.to_i + out_degree.to_i
   end
   
   def connections
@@ -16,11 +16,11 @@ class BaseNode
   end
   
   def friends
-    Edge.all(n1: id).map { |e| e.n2 }
+    @friends ||= Edge.all(n1: id).map { |e| e.n2 }
   end
   
   def followers
-    Edge.all(n2: id).map { |e| e.n1 }    
+    @followers ||= Edge.all(n2: id).map { |e| e.n1 }    
   end
   
   def private?
