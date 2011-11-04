@@ -13,7 +13,8 @@ class MarkovChain
     nodes.shuffle!
     begin
       raise NoValidNextNode if nodes.empty?
-      candidate_node = current_node.new_node(nodes.shift) 
+      candidate_node = current_node.new_node(nodes.shift)
+      # puts "candidate_node: #{candidate_node.id} private? #{candidate_node.private?}" 
     end while candidate_node.private?
     candidate_node
   end

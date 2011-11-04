@@ -12,6 +12,7 @@ GEM
     bcrypt-ruby (2.1.4)
     chronic (0.6.4)
     clbustos-rtf (0.4.2)
+    dalli (1.1.3)
     data_mapper (0.10.2)
       dm-aggregates (~> 0.10.2)
       dm-constraints (~> 0.10.2)
@@ -172,7 +173,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 3.1.0)
   chronic (~> 0.6.0)
+  dalli
   data_mapper (~> 0.10.0)
   dm-adapter-simpledb (~> 1.5.0)
   do_sqlite3 (~> 0.10.0)

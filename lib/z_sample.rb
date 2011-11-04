@@ -5,7 +5,7 @@ require 'statsample'
 class ZSample
   attr_reader :count, :min_iterations
   def initialize(min_iterations = 1e3)
-    @count = BaseSample.count
+    @count = DataMapper.repository(:local) { BaseSample.count }
     @min_iterations = min_iterations
   end
   
@@ -20,7 +20,12 @@ class ZSample
   end 
   
   def last_node
-    BaseSample.last.node
+    sample =DataMapper.repository(:local) { BaseSample.last }
+    if sample
+      sample.node 
+    else
+      nil
+    end
   end
   
   def converged?

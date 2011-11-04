@@ -6,7 +6,9 @@ gem 'do_sqlite3', '~>0.10.0'
 gem 'data_mapper', '~>0.10.0'
 gem 'statsample', '~>1.1.0' 
 gem 'twitter', '~>1.7.0'
-gem 'chronic', '~>0.6.0'
+gem 'chronic', '~>0.6.0' 
+gem 'activesupport', '~>3.1.0'
+gem 'dalli'
 
 
 group :devlopment do
