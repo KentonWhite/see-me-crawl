@@ -12,7 +12,7 @@ class TwitterNode < BaseNode
       config.consumer_secret = "PS5JZqQSNlCa4tlNpFAACdVTQlGJw8FnnUFqQY8M9eo"
     end
     @client = Twitter::Client.new 
-    if !populated?
+    if !populated? || visited_at < Chronic.parse('1 week ago').to_datetime
       populate_from_twitter
     end
   end 
@@ -27,9 +27,9 @@ class TwitterNode < BaseNode
       @private = false
     rescue Twitter::Unauthorized => e
       @private = true
-    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest => e 
-      p e.message
-      retry
+      # rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest => e 
+      #   p e.message
+      #   retry
     end
     save!
     @populated = true      
