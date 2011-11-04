@@ -29,14 +29,5 @@ describe TwitterNode do
       VCR.use_cassette('new', record: :new_episodes) { @node = TwitterNode.new(@id) }
       @node.in_degree.should == in_degree
     end
-    
-    it 'should load the node from Twitter' do
-      DataMapper.auto_migrate!
-      in_degree = 42 
-      visited_at = Chronic.parse('1 month ago')
-      Factory(:node, id: @id, in_degree: in_degree, visited_at: visited_at)
-      VCR.use_cassette('new', record: :new_episodes) { @node = TwitterNode.new(@id) }
-      @node.in_degree.should == 1881     
-    end
   end
 end
