@@ -1,0 +1,1 @@
+unbuffer ruby ./twitter_crawler.rb >> log.txt &
