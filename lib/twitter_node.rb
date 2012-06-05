@@ -87,7 +87,7 @@ class TwitterNode < BaseNode
     # rescue Twitter::Unauthorized => e 
     #   p e.message
     #   @private = true
-    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, EOFError => e 
+    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, SocketError, EOFError => e 
       p e.message
       retry
     end
