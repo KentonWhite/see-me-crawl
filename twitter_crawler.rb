@@ -2,14 +2,14 @@ require './lib/metropolis_hastings_markov_chain.rb'
 require './lib/z_sample.rb'
 require './lib/twitter_node.rb'  
 
-# DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
+DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
 
-DataMapper.setup(:default, 
-  adapter:    'simpledb',
-  access_key: 'AKIAJOOPW5QN4DZJG2BA',
-  secret_key: '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',
-  domain:     'gertrude-stein-tw'
-)
+# DataMapper.setup(:default, 
+#   adapter:    'simpledb',
+#   access_key: 'AKIAJOOPW5QN4DZJG2BA',
+#   secret_key: 'xPedqv6zdtPtxsM/PtxiB6kXrgNb5C9Y9R19JvR1',
+#   domain:     'gertrude-stein-tw'
+# )
 DataMapper.setup(:local, adapter: 'sqlite3', database: 'sample.db')
 
 DataMapper.auto_upgrade!
