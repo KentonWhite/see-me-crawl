@@ -40,3 +40,4 @@ until sample.converged?
 end
 
 puts sample.expectation_value
+p sample.last

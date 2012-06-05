@@ -19,8 +19,12 @@ class ZSample
     @count += 1
   end 
   
+  def last
+    DataMapper.repository(:local) { BaseSample.last }
+  end
+  
   def last_node
-    sample =DataMapper.repository(:local) { BaseSample.last }
+    sample = DataMapper.repository(:local) { BaseSample.last }
     if sample
       sample.node 
     else
