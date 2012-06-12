@@ -14,7 +14,7 @@ DataMapper.setup(:local, adapter: 'sqlite3', database: 'sample.db')
 
 DataMapper.auto_upgrade!
 
-DataMapper.repository(:local) { BaseSample.auto_upgrade! }
+DataMapper.repository(:local) { Sample.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new
