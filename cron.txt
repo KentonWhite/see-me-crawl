@@ -1,1 +1,1 @@
-*/1 * * * * /home/ubuntu/see-me-crawl/check_twitter.sh
+* * * * * /home/ubuntu/see-me-crawl/check_twitter_crawler.sh
