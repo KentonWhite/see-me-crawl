@@ -1,3 +1,3 @@
 crontab -r
-crontab ./cron.txt
-unbuffer ruby ./twitter_crawler.rb >> log.txt &
+crontab /home/ubuntu/see-me-crawl/cron.txt
+unbuffer ruby /home/ubuntu/see-me-crawl/twitter_crawler.rb >> log.txt &
