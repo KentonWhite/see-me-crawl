@@ -2,7 +2,7 @@ require './lib/base_sample.rb'
 
 class NoConvergeSample < BaseSample
 
-  def converge
+  def converged?
     false
   end
 end
