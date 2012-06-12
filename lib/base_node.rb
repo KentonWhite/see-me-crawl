@@ -78,15 +78,29 @@ class BaseNode
   def update_edges(edges) 
     edges.each do |type, list|
       new_edges = list - self.send(type)
-      case type
-      when :friends
-        puts "Update Edges PutAttribute x #{new_edges.size}"
-        new_edges.each { |n| Edge.create(n1: id, n2: n) }
-      when :followers
-        puts "Update Edges PutAttribute x #{new_edges.size}"
-        new_edges.each { |n| Edge.create(n1: n, n2: id) }
-      end
-      self.instance_variable_set("@#{type}", list)
+        case type
+        when :friends
+          puts "Update Edges PutAttribute x #{new_edges.size}"
+          new_edges.each do |n|
+            begin 
+              Edge.create(n1: id, n2: n) 
+            rescue DataObjects::IntegrityError => e
+              puts "Error writing edge (#{id}, #{n})"
+              puts "Skipping"
+            end
+          end
+        when :followers
+          puts "Update Edges PutAttribute x #{new_edges.size}"
+          new_edges.each do |n|
+            begin 
+              Edge.create(n1: n, n2: id) 
+            rescue DataObjects::IntegrityError => e
+              puts "Error writing edge (#{n}, #{id})"
+              puts "Skipping"
+            end              
+          end
+        end
+        self.instance_variable_set("@#{type}", list)
     end 
   end
 
