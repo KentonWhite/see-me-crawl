@@ -10,9 +10,10 @@ class BaseSample
   
   def save!(node)
     node_id = node.id
+    degree = node.degree
     value = yield node
     DataMapper.repository(:local) do 
-      Sample.create(node: node_id, value: value, monitor: monitor)
+      Sample.create(node: node_id, degree: degree, value: value, monitor: monitor)
     end
     @count += 1
   end 

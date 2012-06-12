@@ -7,6 +7,7 @@ describe ZSample do
     @sample = ZSample.new
     @node = mock('BaseNode')
     @node.stub!(:id).and_return(rand(1e9))
+    @node.stub!(:degree)
   end 
   
   describe "count" do

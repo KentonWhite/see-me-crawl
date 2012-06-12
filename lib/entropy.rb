@@ -11,7 +11,7 @@ class Entropy
     DataMapper.repository(:local) do
       Sample.each_chunk(20) do |chunk|
         chunk.each do |s|
-          @distribution[s.value.to_i] += 1
+          @distribution[s.degree] += 1
         end
       end
     end

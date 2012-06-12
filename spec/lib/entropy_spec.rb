@@ -24,8 +24,8 @@ describe Entropy do
   
   describe 'load' do
     before :each do
-      (1..5).each { |i| Factory(:sample, value: 2) }
-      (1..3).each { |i| Factory(:sample, value: 5) }
+      (1..5).each { |i| Factory(:sample, degree: 2) }
+      (1..3).each { |i| Factory(:sample, degree: 5) }
     end
     
     it 'should load the distribution' do
