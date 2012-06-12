@@ -1,39 +1,14 @@
-require './lib/sample.rb'
+require './lib/base_sample.rb'
 require './lib/variance.rb'
 require 'statsample'
 
-class ZSample
-  attr_reader :count, :min_iterations
-  def initialize(min_iterations = 1e3)
-    @count = DataMapper.repository(:local) { Sample.count }
-    @min_iterations = min_iterations
-  end
-  
-  def save!(node)
-    node_id = node.id
-    value = yield node
-    monitor = z_statistic
-    DataMapper.repository(:local) do 
-      Sample.create(node: node_id, value: value, monitor: monitor)
-    end
-    @count += 1
-  end 
-  
-  def last
-    DataMapper.repository(:local) { Sample.last }
-  end
-  
-  def last_node
-    sample = DataMapper.repository(:local) { Sample.last }
-    if sample
-      sample.node 
-    else
-      nil
-    end
-  end
-  
+class ZSample < BaseSample
   def converged?
     count > min_iterations && in_confidence_interval?(0.95)
+  end
+  
+  def monitor
+    z_statistic
   end
   
   def expectation_value
