@@ -1,5 +1,5 @@
 require './lib/metropolis_hastings_markov_chain.rb'
-require './lib/z_sample.rb'
+require './lib/no_converge_sample.rb'
 require './lib/twitter_node.rb'  
 
 DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
