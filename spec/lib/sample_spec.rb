@@ -1,15 +1,15 @@
 require "spec_helper.rb"
-require "base_sample.rb" 
+require "sample.rb" 
 
-describe BaseSample do
+describe Sample do
   describe "create" do 
     before :each do  
-      @sample = Factory(:base_sample)
+      @sample = Factory(:sample)
     end
 
     %w(node value monitor).each do |attr|
       it "should have #{attr}" do  
-        BaseSample.first.send(attr.to_sym).to_s.should == @sample[attr.to_sym].to_s 
+        Sample.first.send(attr.to_sym).to_s.should == @sample[attr.to_sym].to_s 
       end
     end
   end 

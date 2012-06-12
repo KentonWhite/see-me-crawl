@@ -3,7 +3,7 @@ require 'z_sample.rb'
 
 describe ZSample do
   before :each do
-    (1..10).each { |i| Factory(:base_sample, value: i) }
+    (1..10).each { |i| Factory(:sample, value: i) }
     @sample = ZSample.new
     @node = mock('BaseNode')
     @node.stub!(:id).and_return(rand(1e9))
@@ -30,7 +30,7 @@ describe ZSample do
     %w(node value monitor).each do |attr|
       it "should have #{attr}" do
         DataMapper.repository(:local) do  
-          BaseSample.last.send(attr.to_sym).to_s.should == @zsample[attr.to_sym].to_s 
+          Sample.last.send(attr.to_sym).to_s.should == @zsample[attr.to_sym].to_s 
         end
       end
     end
@@ -61,14 +61,14 @@ describe ZSample do
     
     it 'should return true because monitor is in acceptance range' do
       DataMapper.auto_migrate!
-      (1..10).each { |i| Factory(:base_sample, monitor: 0) }
+      (1..10).each { |i| Factory(:sample, monitor: 0) }
       @sample = ZSample.new(5)
       @sample.converged?.should == true
     end
     
     it 'should return false because count is less the min_interactions, even though monitory is in acceptance range' do
       DataMapper.auto_migrate!
-      (1..10).each { |i| Factory(:base_sample, monitor: 0) }
+      (1..10).each { |i| Factory(:sample, monitor: 0) }
       @sample = ZSample.new(100)
       @sample.converged?.should == false      
     end
@@ -92,7 +92,7 @@ describe ZSample do
     
     it 'should return 0 if there is only 1 sample' do
       DataMapper.auto_migrate!
-      Factory(:base_sample)
+      Factory(:sample)
       @sample.send(:z_statistic).should == 0.0
     end
   end

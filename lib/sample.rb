@@ -1,6 +1,6 @@
 require 'data_mapper'
 
-class BaseSample
+class Sample
   include DataMapper::Resource 
 
   property :id,       Serial
