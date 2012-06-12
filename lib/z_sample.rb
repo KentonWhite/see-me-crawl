@@ -33,7 +33,8 @@ class ZSample
   end
   
   def converged?
-    count > min_iterations && in_confidence_interval?(0.95)
+    # count > min_iterations && in_confidence_interval?(0.95)
+    false
   end
   
   def expectation_value
