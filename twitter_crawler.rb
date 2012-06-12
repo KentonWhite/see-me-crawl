@@ -17,7 +17,7 @@ DataMapper.auto_upgrade!
 DataMapper.repository(:local) { BaseSample.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
-sample = ZSample.new
+sample = NoConvergeSample.new
 if sample.last_node
   previous_node = TwitterNode.new(sample.last_node)
 else
