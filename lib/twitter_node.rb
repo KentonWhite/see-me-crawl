@@ -76,6 +76,15 @@ class TwitterNode < BaseNode
     end
     
     clients << Twitter::Client.new
+
+    Twitter.configure do |config|
+      config.oauth_token = "140442120-nqgveE7eIpLOSK7KsBAohGtamcboWUFFM7IoQ3lJ"
+      config.oauth_token_secret = "u5gQ1gFYiyBopefD2EDGkGCKZam9Y1IQstjRm0bPi0"
+      config.consumer_key = 'jbMfebvHBXGq0DzYNcqg'
+      config.consumer_secret = 'JmdijQ1oJzUhohmcrA1saJyw5Ssb42lyFBTtA2aoqE'
+    end
+    
+    clients << Twitter::Client.new
   end
   
   def populate_from_twitter
