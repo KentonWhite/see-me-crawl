@@ -1,6 +1,7 @@
 require './lib/metropolis_hastings_markov_chain.rb'
 require './lib/no_converge_sample.rb'
 require './lib/twitter_node.rb'  
+require './lib/entropy.rb'
 
 DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
 
@@ -18,6 +19,8 @@ DataMapper.repository(:local) { Sample.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new
+
+calculator = Entropy.new
 if sample.last_node
   previous_node = TwitterNode.new(sample.last_node)
 else
@@ -35,7 +38,7 @@ until sample.converged?
   end
   p current_node.id
   current_node.crawl! 
-  sample.save!(current_node) { |node| node.degree }
+  sample.save!(current_node) { |node| calculator.entropy!(node) }
   previous_node = current_node
 end
 
