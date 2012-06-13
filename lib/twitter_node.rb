@@ -99,6 +99,11 @@ class TwitterNode < BaseNode
     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, SocketError, EOFError => e 
       p e.message
       retry
+    rescue Twitter::Forbidden => e
+      p e.message
+      @in_degree = 0
+      @out_degree = 0
+      @private = true
     end
     save!
     @populated = true      
