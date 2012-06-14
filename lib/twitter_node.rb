@@ -5,7 +5,7 @@ require 'active_support/inflector'
 class TwitterNode < BaseNode
   def initialize(id)
     super(id)
-    if !populated? || stale?(visited_at)
+    if !populated? || stale?(visited_at) || degree == 0
       populate_from_twitter
     end
   end
