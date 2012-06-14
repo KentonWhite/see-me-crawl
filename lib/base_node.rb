@@ -1,6 +1,7 @@
 require './lib/graph.rb'
 require 'chronic'
 require 'dalli'
+require 'set'
 
 class BaseNode
   
@@ -82,7 +83,7 @@ class BaseNode
   
   def update_edges(edges) 
     edges.each do |type, list|
-      new_edges = list - self.send(type)
+      new_edges = Set.new(list - self.send(type))
         case type
         when :friends
           puts "Update Edges PutAttribute x #{new_edges.size}"
