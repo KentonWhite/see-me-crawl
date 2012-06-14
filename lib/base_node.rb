@@ -72,7 +72,12 @@ class BaseNode
     else
       Node.create(params)      
     end
-    @@cache.set(id, self)
+    begin
+      @@cache.set(id, self)
+    rescue Dalli::DalliError => e
+      p e
+      puts "Skipping cache step"
+    end
   end
   
   def update_edges(edges) 
