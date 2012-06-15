@@ -1,6 +1,7 @@
 require './lib/base_node.rb' 
 require 'twitter'
 require 'active_support/inflector'
+require 'yaml'
 
 class TwitterNode < BaseNode
   def initialize(id)
@@ -44,42 +45,18 @@ class TwitterNode < BaseNode
   end 
   
   def new_client
+    accounts = YAML::load_file(File.dirname(__FILE__) + '/../config/twitter.yml')['clients']
     clients = []
-    Twitter.configure do |config|
-      config.oauth_token = "140442120-yoNDd54g5djiWwaX1EJObNHo48L3Et0XXc1eCXW9"
-      config.oauth_token_secret = "VlDMtXoI7TmvC7lBlHVpEJxkUlvTnux3AidEh0qiI"
-      config.consumer_key = "vu2ILfmWPptGVZzcFQtzIA"
-      config.consumer_secret = "PS5JZqQSNlCa4tlNpFAACdVTQlGJw8FnnUFqQY8M9eo"
+    accounts.each do |account|
+      Twitter.configure do |config|
+        config.oauth_token = account['oauth_token']
+        config.oauth_token_secret = account['oauth_token_secret']
+        config.consumer_key = account['consumer_key']
+        config.consumer_secret = account['consumer_secret']
+      end
+      clients << Twitter::Client.new
     end
-
-    clients << Twitter::Client.new
-
-    Twitter.configure do |config|
-      config.oauth_token = "57954581-TJBachPGM7Z6D92HZfRQ8qeRFqVgKTzgANMGq5pdN"
-      config.oauth_token_secret = "2ubyhfuttgGp5cf8DOsSfQT0nF1Y5VsvW3vSS03k"
-      config.consumer_key = "vu2ILfmWPptGVZzcFQtzIA"
-      config.consumer_secret = "PS5JZqQSNlCa4tlNpFAACdVTQlGJw8FnnUFqQY8M9eo"
-    end
-
-    clients << Twitter::Client.new
-
-    Twitter.configure do |config|
-      config.oauth_token = "221467686-e1IbDn2sypx36XFvskscqkfpK1HOjwhaBDeGL4Mk"
-      config.oauth_token_secret = "tVTVYGNx7XBWBWZjQM9KQ15kchi5zvCvw32cCTRRU"
-      config.consumer_key = "cmN0crWAu4PjgyKvS6Now"
-      config.consumer_secret = "pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI"
-    end
-    
-    clients << Twitter::Client.new
-
-    Twitter.configure do |config|
-      config.oauth_token = "140442120-nqgveE7eIpLOSK7KsBAohGtamcboWUFFM7IoQ3lJ"
-      config.oauth_token_secret = "u5gQ1gFYiyBopefD2EDGkGCKZam9Y1IQstjRm0bPi0"
-      config.consumer_key = 'jbMfebvHBXGq0DzYNcqg'
-      config.consumer_secret = 'JmdijQ1oJzUhohmcrA1saJyw5Ssb42lyFBTtA2aoqE'
-    end
-    
-    clients << Twitter::Client.new
+    clients
   end
   
   def populate_from_twitter
