@@ -46,17 +46,7 @@ class TwitterNode < BaseNode
   
   def new_client
     accounts = YAML::load_file(File.dirname(__FILE__) + '/../config/twitter.yml')['clients']
-    clients = []
-    accounts.each do |account|
-      Twitter.configure do |config|
-        config.oauth_token = account['oauth_token']
-        config.oauth_token_secret = account['oauth_token_secret']
-        config.consumer_key = account['consumer_key']
-        config.consumer_secret = account['consumer_secret']
-      end
-      clients << Twitter::Client.new
-    end
-    clients
+    accounts.map { |account| Twitter::Client.new(account) }
   end
   
   def populate_from_twitter
