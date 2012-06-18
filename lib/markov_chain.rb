@@ -26,6 +26,7 @@ class MarkovChain
   private
   
   def choose_node(current_node, candidate_node)
+    puts "Comparing curent_node (id: #{current_node.id} degree: #{current_node.degree}) with candidate_node (id: #{candidate_node.id} degree: #{candidate_node.degree})"
     accept?(candidate_node, current_node) ? candidate_node : current_node
   end 
   
