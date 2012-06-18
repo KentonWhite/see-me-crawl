@@ -39,7 +39,7 @@ class BaseNode
   
   def new_node(new_id)
     new_node = @@cache.get(new_id)
-    if new_node
+    if new_node && new_node.degree != 0
       new_node
     else
       new_node = self.class.new(new_id)
