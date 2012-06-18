@@ -12,7 +12,7 @@ gem 'activesupport', '~>3.1.0'
 gem 'dalli', '~>1.1.3'
 gem 'dm-chunked_query', '~>0.3.1'
 gem 'dm-timestamps', '~>1.2.0'
-
+gem 'trollop', '~>1.16.2'
 
 group :devlopment do
   gem 'rspec', '~>2.5.0'

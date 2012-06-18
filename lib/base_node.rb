@@ -2,10 +2,25 @@ require './lib/graph.rb'
 require 'chronic'
 require 'dalli'
 require 'set'
+require 'trollop'
 
 class BaseNode
   
-  @@cache = Dalli::Client.new('localhost:11211', expires_in: 604800)
+  class NullCache
+    def get(id)
+      
+    end
+    
+    def set(id, obj)
+      
+    end
+  end
+
+  opts = Trollop::options do
+    opt :memcached, "Use memcached", :default => false
+  end
+  
+  @@cache = opts[:memcached] ? Dalli::Client.new('localhost:11211', expires_in: 604800) : NullCache.new
   
   class MethodNotImplemented < StandardError; end 
   
