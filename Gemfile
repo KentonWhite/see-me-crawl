@@ -11,6 +11,7 @@ gem 'chronic', '~>0.6.0'
 gem 'activesupport', '~>3.1.0'
 gem 'dalli', '~>1.1.3'
 gem 'dm-chunked_query', '~>0.3.1'
+gem 'dm-timestamps', '~>1.2.0'
 
 
 group :devlopment do
