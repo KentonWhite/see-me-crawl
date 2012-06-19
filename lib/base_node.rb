@@ -49,7 +49,7 @@ class BaseNode
   end
   
   def private?
-    private
+    private || degree == 0
   end 
   
   def new_node(new_id)

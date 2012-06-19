@@ -6,7 +6,7 @@ require 'yaml'
 class TwitterNode < BaseNode
   def initialize(id)
     super(id)
-    if !populated? || stale?(visited_at) || degree == 0
+    if !populated? || stale?(visited_at)
       populate_from_twitter
     end
   end
