@@ -62,7 +62,6 @@ class TwitterNode < BaseNode
       user = client.user(id) 
       @in_degree = user.followers_count
       @out_degree = user.friends_count
-      @degree = @in_degree + @out_degree
       @private = user.protected
     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, SocketError, EOFError => e 
       p e.message

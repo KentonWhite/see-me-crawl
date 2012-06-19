@@ -33,7 +33,7 @@ class BaseNode
   end 
   
   def degree
-    @degree ||= in_degree.to_i + out_degree.to_i
+    in_degree.to_i + out_degree.to_i
   end
   
   def connections
