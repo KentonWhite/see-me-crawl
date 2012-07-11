@@ -8,6 +8,7 @@ class TwitterNode < BaseNode
     super(id)
     if !populated? || stale?(visited_at)
       populate_from_twitter
+      save!
     end
   end
   
@@ -71,9 +72,7 @@ class TwitterNode < BaseNode
       @in_degree = 0
       @out_degree = 0
       @private = true
-      return user
     end
-    save!
     @populated = true
     user      
   end
