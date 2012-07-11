@@ -16,7 +16,7 @@ class TwitterCityNode < TwitterNode
    nodes.each_slice(100) do |n|
      begin
        users = client.users(n)
-     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError => e 
+     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Zlib::GzipFile::Error => e 
        p client 
        p e.message
        retry
