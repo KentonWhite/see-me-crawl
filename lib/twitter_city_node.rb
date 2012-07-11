@@ -3,7 +3,7 @@ require 'hashie'
 
 class TwitterCityNode < TwitterNode
 
-  @@city = 'ottawa'
+  @@city = /ottawa/i
   
   def initialize(id)
     user = super(id)
@@ -21,7 +21,7 @@ class TwitterCityNode < TwitterNode
        p e.message
        retry
      end
-     users.keep_if { |u| u.location =~ /#{@@city}/i }
+     users.keep_if { |u| u.location =~ @@city }
      filtered_nodes.concat users.map { |u| u.id }
    end 
    filtered_nodes 
