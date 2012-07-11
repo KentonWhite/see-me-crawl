@@ -17,6 +17,7 @@ class TwitterCityNode < TwitterNode
      begin
        users = client.users(n)
      rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError => e 
+       p client 
        p e.message
        retry
      end
