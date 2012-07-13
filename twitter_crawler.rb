@@ -1,6 +1,6 @@
 require './lib/metropolis_hastings_markov_chain.rb'
 require './lib/no_converge_sample.rb'
-require './lib/twitter_node.rb'  
+require './lib/hashtag_twitter_node.rb'  
 require './lib/entropy.rb'
 
 DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
@@ -16,9 +16,9 @@ sample = NoConvergeSample.new
 
 calculator = Entropy.new
 if sample.last_node
-  previous_node = TwitterNode.new(sample.last_node)
+  previous_node = HashtagTwitterNode.new(sample.last_node)
 else
-  previous_node = TwitterNode.new(16450138)
+  previous_node = HashtagTwitterNode.new(16450138)
   previous_node.crawl!
 end  
 
@@ -32,7 +32,7 @@ until sample.converged?
   end
   p current_node.id
   current_node.crawl! 
-  sample.save!(current_node) { |node| calculator.entropy!(node) }
+  sample.save!(current_node) { |node| current_node.hashtag? }
   previous_node = current_node
 end
 
