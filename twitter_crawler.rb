@@ -19,7 +19,7 @@ if sample.last_node
   previous_node = TwitterCityNode.new(sample.last_node)
 else
   # previous_node = TwitterCityNode.new(16450138)
-  previous_node = TwitterCityNode.new(9091422)
+  previous_node = TwitterCityNode.new(24105706)
   previous_node.crawl!
 end  
 

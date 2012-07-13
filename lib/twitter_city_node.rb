@@ -3,7 +3,7 @@ require 'hashie'
 
 class TwitterCityNode < TwitterNode
 
-  @@city = /new york|nyc|manhattan|bronx|brooklyn|queens|staten island/i
+  @@city = /toronto/i
   
   def initialize(id)
     user = super(id)
