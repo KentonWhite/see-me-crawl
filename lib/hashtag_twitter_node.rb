@@ -2,7 +2,7 @@ require './lib/twitter_node.rb'
 
 class HashtagTwitterNode < TwitterNode
   
-  @@hashtag_regex = /#followfriday/i
+  @@hashtag_regex = /#/i
 
   def hashtag?
     @hastag ||= check_hashtag
