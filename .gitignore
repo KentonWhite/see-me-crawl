@@ -4,4 +4,4 @@ log.txt
 config/twitter.yml
 R/*
 .RData
-.Rhistory
+.RHistory
