@@ -20,6 +20,9 @@ class TwitterCityNode < TwitterNode
        p client 
        p e.message
        retry
+     rescue Twitter::NotFound => e
+       p e.message
+       next
      end
      users.keep_if { |u| u.location =~ @@city }
      filtered_nodes.concat users.map { |u| u.id }

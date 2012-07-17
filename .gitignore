@@ -2,3 +2,6 @@
 *.db-journal
 log.txt
 config/twitter.yml
+R/*
+.RData
+.RHistory
