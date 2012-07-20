@@ -4,4 +4,8 @@ log.txt
 config/twitter.yml
 R/*
 .RData
+<<<<<<< HEAD
 .RHistory
+=======
+.RHistory
+>>>>>>> 0c885e40ae0aa2a53e870be31120c6da6e353b33

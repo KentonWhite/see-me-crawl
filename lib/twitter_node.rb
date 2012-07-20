@@ -66,11 +66,16 @@ class TwitterNode < BaseNode
       @out_degree = user.friends_count
       @private = user.protected
 <<<<<<< HEAD
+<<<<<<< HEAD
     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error => e 
 =======
     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Zlib::GzipFile::Error => e 
       p client 
 >>>>>>> Added client information in twitter error message
+=======
+    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError => e 
+      p client 
+>>>>>>> 0c885e40ae0aa2a53e870be31120c6da6e353b33
       p e.message
       retry
     rescue Twitter::Forbidden, Twitter::NotFound  => e
