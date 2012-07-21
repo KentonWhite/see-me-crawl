@@ -7,8 +7,9 @@ class TwitterNode < BaseNode
   def initialize(id)
     super(id)
     if !populated? || stale?(visited_at)
-      populate_from_twitter
+      user = populate_from_twitter
       save!
+      user
     end
   end
   
@@ -71,7 +72,7 @@ class TwitterNode < BaseNode
       retry
     rescue Twitter::Forbidden, Twitter::NotFound  => e
       p e.message
-      @in_degree = 0
+      @in_degree = 0git l
       @out_degree = 0
       @private = true
     end
