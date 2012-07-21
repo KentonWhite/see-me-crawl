@@ -71,7 +71,7 @@ class TwitterNode < BaseNode
       retry
     rescue Twitter::Forbidden, Twitter::NotFound  => e
       p e.message
-      @in_degree = 0git l
+      @in_degree = 0
       @out_degree = 0
       @private = true
     end
