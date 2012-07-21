@@ -3,9 +3,9 @@ require './lib/no_converge_sample.rb'
 require './lib/twitter_node.rb'  
 require './lib/entropy.rb'
 
-DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
+DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
 
-DataMapper.setup(:local, adapter: 'sqlite3', database: 'sample.db')
+DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 
 DataMapper.auto_upgrade!
 
