@@ -10,6 +10,7 @@ DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 DataMapper.auto_upgrade!
 
 DataMapper.repository(:local) { Sample.auto_upgrade! }
+DataMapper.repository(:local) { Hashtag.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new

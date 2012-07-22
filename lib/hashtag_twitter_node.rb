@@ -1,4 +1,5 @@
-require './lib/twitter_node.rb' 
+require './lib/twitter_node.rb'
+# require './lib/sample.rb' 
 
 class HashtagTwitterNode < TwitterNode
   
@@ -18,14 +19,20 @@ class HashtagTwitterNode < TwitterNode
       p e.message
       retry
     end
+    hashtag_found = 0
     statuses.each do |s|
       if s.text =~ @@hashtag_regex then
         puts "hashtag found"
         puts s.text
-        return 1
+        hashtag_found = 1
+      end
+      hastags = s.text.scan(/#\w+/i)
+      hastags.each do |h|
+        DataMapper.repository(:local) do
+          Hashtag.create(node: id, hashtag: h.downcase, hashtag_time: s.created_at)
+        end
       end
     end
-    puts "hashtag not found"
-    return 0
+    return hashtag_found
   end
 end
