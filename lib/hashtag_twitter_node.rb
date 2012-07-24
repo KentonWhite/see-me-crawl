@@ -20,8 +20,9 @@ class HashtagTwitterNode < TwitterNode
       retry
     end
     hashtag_found = 0
+    messages = Hashtag.all(node: id, fields: [:message_id]).map { |m| m.message_id }
     statuses.each do |s|
-      next if Hashtag.count(message_id: s.id) > 0
+      next if messages.include? s.id
       if s.text =~ @@hashtag_regex then
         puts "hashtag found"
         puts s.text
