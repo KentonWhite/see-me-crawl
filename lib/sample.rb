@@ -19,7 +19,7 @@ class Hashtag
   
   property :id, Serial
   property :node, Integer, min: 0, max: 2**32
-  property :message_id, Integer, min: 0, max: 2**64
+  property :message_id, Integer, min: 0, max: 2**64-1
   property :hashtag, String
   property :created_at, DateTime
   property :hashtag_time, DateTime
