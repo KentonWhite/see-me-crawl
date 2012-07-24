@@ -29,7 +29,7 @@ class HashtagTwitterNode < TwitterNode
       hastags = s.text.scan(/#\w+/i)
       hastags.each do |h|
         DataMapper.repository(:local) do
-          Hashtag.create(node: id, hashtag: h.downcase, hashtag_time: s.created_at)
+          Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at)
         end
       end
     end
