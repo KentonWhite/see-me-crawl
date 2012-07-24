@@ -21,6 +21,7 @@ class HashtagTwitterNode < TwitterNode
     end
     hashtag_found = 0
     statuses.each do |s|
+      next if Hashtag.count(message_id: s.id) > 0
       if s.text =~ @@hashtag_regex then
         puts "hashtag found"
         puts s.text
