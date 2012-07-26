@@ -7,7 +7,7 @@ class Sample
   include DataMapper::ChunkedQuery
   
   property :id,       Serial
-  property :node,     Integer, min: 0, max: 2**32
+  property :node,     Integer, min: 0, max: 2**32, index: true
   property :degree,   Integer
   property :value,    Float
   property :monitor,  Float
