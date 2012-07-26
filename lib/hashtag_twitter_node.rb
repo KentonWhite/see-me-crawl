@@ -6,7 +6,7 @@ class HashtagTwitterNode < TwitterNode
   @@hashtag_regex = /#/i
 
   def hashtag?
-    @hastag ||= check_hashtag
+    @hashtag ||= check_hashtag
   end
   
   private

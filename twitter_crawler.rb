@@ -15,7 +15,6 @@ DataMapper.repository(:local) { Hashtag.auto_upgrade! }
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new
 
-calculator = Entropy.new
 if sample.last_node
   previous_node = HashtagTwitterNode.new(sample.last_node)
 else
