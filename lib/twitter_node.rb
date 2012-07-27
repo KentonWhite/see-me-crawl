@@ -28,7 +28,7 @@ class TwitterNode < BaseNode
     until cursor == 0
       begin
         result = client.send("#{type.to_s.singularize}_ids", id, cursor: cursor)
-      rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error => e 
+      rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error, Timeout::Error => e 
         p client
         p e.message
         retry
@@ -66,7 +66,7 @@ class TwitterNode < BaseNode
       @in_degree = user.followers_count
       @out_degree = user.friends_count
       @private = user.protected
-    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error => e 
+    rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error, Timeout::Error => e 
       p e.message
       retry
     rescue Twitter::Forbidden, Twitter::NotFound  => e
