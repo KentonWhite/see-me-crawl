@@ -20,8 +20,8 @@ if sample.last_node
   previous_node = HashtagTwitterNode.new(sample.last_node)
 else
   previous_node = HashtagTwitterNode.new(16450138)
-  previous_node.crawl!
 end  
+  previous_node.crawl!
 
 until sample.converged? 
   begin
