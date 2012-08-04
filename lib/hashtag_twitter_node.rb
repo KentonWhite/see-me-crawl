@@ -20,9 +20,13 @@ class HashtagTwitterNode < TwitterNode
       retry
     end
     hashtag_found = 0
-    messages = Hashtag.all(node: id, fields: [:message_id]).map { |m| m.message_id }
+    # messages = Hashtag.all(node: id, fields: [:message_id]).map { |m| m.message_id }
     statuses.each do |s|
-      next if messages.include? s.id
+      # next if messages.include? s.id
+      next if Message.count(id: s.id) > 0
+      DataMapper.repository(:local) do
+        Message.create(id: s.id, message_time: s.created_at)
+      end
       if s.text =~ @@hashtag_regex then
         puts "hashtag found"
         puts s.text

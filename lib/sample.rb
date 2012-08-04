@@ -24,3 +24,11 @@ class Hashtag
   property :created_at, DateTime
   property :hashtag_time, DateTime
 end
+
+class Message
+  include DataMapper::Resource
+
+  property :id, Integer, min: 0, max: 2**64-1, key: true, unique: true
+  property :created_at, DateTime
+  property :message_time, DateTime  
+end
