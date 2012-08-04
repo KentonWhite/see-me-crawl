@@ -22,7 +22,7 @@ class HashtagTwitterNode < TwitterNode
     statuses.each do |s|
       next if Message.count(id: s.id) > 0
       DataMapper.repository(:local) do
-        Message.create(id: s.id, message_time: s.created_at)
+        Message.create(id: s.id, node: id, message_time: s.created_at)
       end
       if s.text =~ @@hashtag_regex then
         hashtag_found = 1
