@@ -27,7 +27,7 @@ class HashtagTwitterNode < TwitterNode
       if s.text =~ @@hashtag_regex then
         hashtag_found = 1
       end
-      hastags = s.text.scan(/#\w+/i)
+      hastags = s.text.scan(/[#\@]\w+/i)
       hastags.each do |h|
         DataMapper.repository(:local) do
           Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at)
