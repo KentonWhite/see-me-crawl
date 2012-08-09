@@ -25,6 +25,17 @@ class Hashtag
   property :hashtag_time, DateTime
 end
 
+class Mention
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :node, Integer, min: 0, max: 2**32, index: true
+  property :message_id, Integer, min: 0, max: 2**64-1
+  property :mention, String, index: true
+  property :created_at, DateTime
+  property :mention_time, DateTime
+end
+
 class Message
   include DataMapper::Resource
 
