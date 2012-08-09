@@ -11,6 +11,7 @@ DataMapper.auto_upgrade!
 
 DataMapper.repository(:local) { Sample.auto_upgrade! }
 DataMapper.repository(:local) { Hashtag.auto_upgrade! }
+DataMapper.repository(:local) { Mention.auto_upgrade! }
 DataMapper.repository(:local) { Message.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
