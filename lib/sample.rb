@@ -23,6 +23,7 @@ class Hashtag
   property :hashtag, String, index: true
   property :created_at, DateTime
   property :hashtag_time, DateTime
+  property :hashtag_date, Date, index: true
 end
 
 class Mention
@@ -34,6 +35,7 @@ class Mention
   property :mention, String, index: true
   property :created_at, DateTime
   property :mention_time, DateTime
+  property :mention_date, Date, index: true
 end
 
 class Message
@@ -43,4 +45,5 @@ class Message
   property :node, Integer, min: 0, max: 2**32, index: true
   property :created_at, DateTime
   property :message_time, DateTime  
+  property :message_date, Date, index: true  
 end
