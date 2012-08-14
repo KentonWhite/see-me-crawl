@@ -25,7 +25,8 @@ class HashtagTwitterNode < TwitterNode
       DataMapper.repository(:local) do
         begin
           Message.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
-        rescue DataObjects::SQLError
+        rescue DataObjects::SQLError => e
+          p e.message
           retry
         end
       end

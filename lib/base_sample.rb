@@ -13,7 +13,12 @@ class BaseSample
     degree = node.degree
     value = yield node
     DataMapper.repository(:local) do 
-      Sample.create(node: node_id, degree: degree, value: value, monitor: monitor)
+      begin
+        Sample.create(node: node_id, degree: degree, value: value, monitor: monitor)
+      rescue DataObjects::SQLError => e
+        p e.message
+        retry
+      end
     end
     @count += 1
   end 
