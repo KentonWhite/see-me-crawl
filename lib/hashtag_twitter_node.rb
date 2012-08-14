@@ -22,7 +22,7 @@ class HashtagTwitterNode < TwitterNode
     statuses.each do |s|
       next if Message.count(id: s.id) > 0
       DataMapper.repository(:local) do
-        Message.create(id: s.id, node: id, message_time: s.created_at)
+        Message.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
       end
       if s.text =~ @@hashtag_regex then
         hashtag_found = 1
@@ -30,13 +30,13 @@ class HashtagTwitterNode < TwitterNode
       hastags = s.text.scan(/[#]\w+/i)
       hastags.each do |h|
         DataMapper.repository(:local) do
-          Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at)
+          Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
         end
       end
       mentions = s.text.scan(/[\@]\w+/i)
       mentions.each do |m|
         DataMapper.repository(:local) do
-          Mention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at)
+          Mention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
         end
       end
     end
