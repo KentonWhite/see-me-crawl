@@ -1,4 +1,5 @@
 require './lib/twitter_node.rb'
+require 'active_support/core_ext'
 # require './lib/sample.rb' 
 
 class HashtagTwitterNode < TwitterNode
