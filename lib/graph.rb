@@ -13,6 +13,7 @@ end
 
 class Edge
   include DataMapper::Resource
-  property :n1,  Integer, min: 0, max: 2**32, key: true
-  property :n2,  Integer, min: 0, max: 2**32, index: true    
+  property :id,  Integer, min: 0, max: 2**64-1, key: true
+  property :n1,  Integer, min: 0, max: 2**32-1, index: true
+  property :n2,  Integer, min: 0, max: 2**32-1, index: true    
 end     
