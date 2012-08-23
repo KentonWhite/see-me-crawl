@@ -47,3 +47,10 @@ class Message
   property :message_time, DateTime  
   property :message_date, Date, index: true  
 end
+
+class Summary
+  include DataMapper::Resource
+
+  property :date, Date, key: true
+  property :count, Integer
+end
