@@ -2,42 +2,13 @@ require './lib/base_sample.rb'
 require './lib/variance.rb'
 require 'statsample'
 
-class ZSample
-  attr_reader :count, :min_iterations
-  def initialize(min_iterations = 1e3)
-    @count = DataMapper.repository(:local) { BaseSample.count }
-    @min_iterations = min_iterations
-  end
-  
-  def save!(node)
-    node_id = node.id
-    deg = node.degree
-    
-    puts "degree:", deg
-    
-    value = yield node
-    monitor = z_statistic
-    DataMapper.repository(:local) do 
-      BaseSample.create(node: node_id, degree: deg, value: value, monitor: monitor)
-    end
-    @count += 1
-  end 
-  
-  def last
-    DataMapper.repository(:local) { BaseSample.last }
-  end
-  
-  def last_node
-    sample = DataMapper.repository(:local) { BaseSample.last }
-    if sample
-      sample.node 
-    else
-      nil
-    end
-  end
-  
+class ZSample < BaseSample
   def converged?
     count > min_iterations && in_confidence_interval?(0.95)
+  end
+  
+  def monitor
+    z_statistic
   end
   
   def expectation_value
@@ -58,7 +29,7 @@ class ZSample
   
   def tail(field, percent, order)
     DataMapper.repository(:local) do
-      BaseSample.all(:fields => [field], :order => [:id.send(order)], :limit => (count*percent).ceil).map {|s| s.send(field)}
+      Sample.all(:fields => [field], :order => [:id.send(order)], :limit => (count*percent).ceil).map {|s| s.send(field)}
     end
   end
   

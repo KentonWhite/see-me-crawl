@@ -7,6 +7,7 @@ DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
 DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 
 DataMapper.auto_upgrade!
+DataMapper.repository(:local) { Sample.auto_upgrade! }
 
 #markov_chain = MetropolisHastingsMarkovChain.new
 
