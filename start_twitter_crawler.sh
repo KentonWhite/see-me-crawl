@@ -1,1 +1,1 @@
-unbuffer ruby ./twitter_crawler.rb --memcached >> log.txt &
+unbuffer ruby ./twitter_crawler.rb >> log.txt &

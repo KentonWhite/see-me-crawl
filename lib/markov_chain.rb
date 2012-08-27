@@ -3,9 +3,9 @@ class MarkovChain
   class NoValidNextNode < StandardError; end
   class MethodNotImplemented < StandardError; end
 
-  def next(current_node)
+  def next(current_node) 
     candidate_node = select_candidate(current_node)
-    choose_node(current_node, candidate_node)
+    node = choose_node(current_node, candidate_node)
   end
   
   def select_candidate(current_node)
@@ -26,7 +26,6 @@ class MarkovChain
   private
   
   def choose_node(current_node, candidate_node)
-    puts "Comparing curent_node (id: #{current_node.id} degree: #{current_node.degree}) with candidate_node (id: #{candidate_node.id} degree: #{candidate_node.degree})"
     accept?(candidate_node, current_node) ? candidate_node : current_node
   end 
   
