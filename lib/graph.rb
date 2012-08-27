@@ -1,5 +1,4 @@
 require 'data_mapper'
-#require 'datamapper'
 
 class Node
   include DataMapper::Resource
@@ -14,6 +13,7 @@ end
 
 class Edge
   include DataMapper::Resource
-  property :n1,  Integer, min: 0, max: 2**32, key: true
-  property :n2,  Integer, min: 0, max: 2**32, key: true    
-end 
+  property :id,  Serial, min: 0, max: 2**64-1
+  property :n1,  Integer, min: 0, max: 2**32-1, index: true
+  property :n2,  Integer, min: 0, max: 2**32-1, index: true    
+end     

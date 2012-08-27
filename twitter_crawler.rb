@@ -1,37 +1,30 @@
 require './lib/metropolis_hastings_markov_chain.rb'
-require './lib/z_sample.rb'
-require './lib/twitter_node.rb'  
+require './lib/no_converge_sample.rb'
+require './lib/hashtag_twitter_node.rb'  
+require './lib/entropy.rb'
 
-DataMapper.setup(:default, adapter: 'sqlite3', database: 'graph.db')
+DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
 
-# DataMapper.setup(:default, 
-#   adapter:    'simpledb',
-#   access_key: 'AKIAJOOPW5QN4DZJG2BA',
-#   secret_key: 'xPedqv6zdtPtxsM/PtxiB6kXrgNb5C9Y9R19JvR1',
-#   domain:     'gertrude-stein-tw', 
-# )
-DataMapper.setup(:local, adapter: 'sqlite3', database: 'sample.db')
+DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 
 DataMapper.auto_upgrade!
 
-DataMapper.repository(:local) { BaseSample.auto_upgrade! }
+DataMapper.repository(:local) { Sample.auto_upgrade! }
+DataMapper.repository(:local) { Hashtag.auto_upgrade! }
+DataMapper.repository(:local) { Mention.auto_upgrade! }
+DataMapper.repository(:local) { Message.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
-sample = ZSample.new
-if sample.last_node
-  previous_node = TwitterNode.new(sample.last_node)
-else
-	
-  previous_node = TwitterNode.new(16450138)
-   
-  previous_node.crawl!
-  
-end  
+sample = NoConvergeSample.new
 
-p "first node  #{previous_node.id}"
+if sample.last_node
+  previous_node = HashtagTwitterNode.new(sample.last_node)
+else
+  previous_node = HashtagTwitterNode.new(16450138)
+end  
+  previous_node.crawl!
 
 until sample.converged? 
-  
   begin
     current_node = markov_chain.next(previous_node)
   rescue => e
@@ -39,18 +32,10 @@ until sample.converged?
     p previous_node
     raise e
   end
-  
-  # p current_node.id  
-  puts "crawl #{current_node.id}"
-  
+  p current_node.id
   current_node.crawl! 
-  
-  # puts "save sample..."
-  
-  sample.save!(current_node) { |node| node.degree }
+  sample.save!(current_node) { |node| current_node.hashtag? }
   previous_node = current_node
-  
-  # puts "crawl is done!"
 end
 
 puts sample.expectation_value
