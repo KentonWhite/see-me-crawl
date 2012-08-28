@@ -107,7 +107,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 # shuffle with seed s
  def shuffle(arr, s)
   rng = Random.new(s)
-  for i in 0..arr.length
+  for i in 0..arr.length - 1
     j = rng.rand(arr.length)
     tmp = arr[i]
     arr[i] = arr[j]
