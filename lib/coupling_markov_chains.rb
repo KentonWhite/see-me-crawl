@@ -82,15 +82,12 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 		return candidate_node
 	end
     
-	nodes = current_node.connections
-	if nodes.empty?
-		current_node.crawl!
-		nodes = current_node.connections
-     end
-        
+	current_node.crawl! if current_node.crawled_at.nil?
+    nodes = current_node.connections
+       
     #nodes.shuffle!
     
-    rng = nodes.size * u  
+    rng = nodes.size * u + 1 
     #nodes.shuffle!(Randon.new(rng.to_i)), in Ruby 1.9.3
     
     nodes = shuffle(nodes, rng.to_i)
