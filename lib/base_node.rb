@@ -108,7 +108,7 @@ class BaseNode
             adapter = DataMapper.repository(:default).adapter 
             begin
               adapter.execute(sql)
-            rescue DataObjects::IntegrityError => e
+            rescue DataObjects::IntegrityError, DataObjects::SQLError => e
               puts "Error writing edge (#{id}, #{n})"
               puts "Skipping"
             end
@@ -121,7 +121,7 @@ class BaseNode
             adapter = DataMapper.repository(:default).adapter 
             begin 
               adapter.execute(sql)
-            rescue DataObjects::IntegrityError => e
+            rescue DataObjects::IntegrityError, DataObjects::SQLError => e
               puts "Error writing edge (#{n}, #{id})"
               puts "Skipping"
             end              

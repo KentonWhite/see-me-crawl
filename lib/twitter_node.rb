@@ -28,7 +28,7 @@ class TwitterNode < BaseNode
     until cursor == 0
       begin
         result = client.send("#{type.to_s.singularize}_ids", id, cursor: cursor)
-      rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error, Timeout::Error, Faraday::Error::TimeoutError => e 
+      rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, Twitter::Unauthorized, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error, Timeout::Error, Faraday::Error::TimeoutError => e 
         p client
         p e.message
         retry
@@ -69,7 +69,7 @@ class TwitterNode < BaseNode
     rescue Twitter::ServiceUnavailable, Errno::ECONNRESET, Twitter::BadGateway, Twitter::BadRequest, Twitter::InternalServerError, OpenSSL::SSL::SSLError, SocketError, EOFError, Errno::ETIMEDOUT, Zlib::GzipFile::Error, Timeout::Error, Faraday::Error::TimeoutError => e 
       p e.message
       retry
-    rescue Twitter::Forbidden, Twitter::NotFound  => e
+    rescue Twitter::Forbidden, Twitter::NotFound, Twitter::Unauthorized  => e
       p e.message
       @in_degree = 0
       @out_degree = 0

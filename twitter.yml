@@ -1,0 +1,46 @@
+---
+clients:
+  - oauth_token:        140442120-yoNDd54g5djiWwaX1EJObNHo48L3Et0XXc1eCXW9
+    oauth_token_secret: VlDMtXoI7TmvC7lBlHVpEJxkUlvTnux3AidEh0qiI
+    consumer_key:       vu2ILfmWPptGVZzcFQtzIA
+    consumer_secret:    PS5JZqQSNlCa4tlNpFAACdVTQlGJw8FnnUFqQY8M9eo
+    
+  - oauth_token:        57954581-TJBachPGM7Z6D92HZfRQ8qeRFqVgKTzgANMGq5pdN
+    oauth_token_secret: 2ubyhfuttgGp5cf8DOsSfQT0nF1Y5VsvW3vSS03k
+    consumer_key:       vu2ILfmWPptGVZzcFQtzIA
+    consumer_secret:    PS5JZqQSNlCa4tlNpFAACdVTQlGJw8FnnUFqQY8M9eo
+
+  - oauth_token:        221467686-e1IbDn2sypx36XFvskscqkfpK1HOjwhaBDeGL4Mk
+    oauth_token_secret: tVTVYGNx7XBWBWZjQM9KQ15kchi5zvCvw32cCTRRU
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
+
+  - oauth_token:        140442120-nqgveE7eIpLOSK7KsBAohGtamcboWUFFM7IoQ3lJ
+    oauth_token_secret: u5gQ1gFYiyBopefD2EDGkGCKZam9Y1IQstjRm0bPi0
+    consumer_key:       jbMfebvHBXGq0DzYNcqg
+    consumer_secret:    JmdijQ1oJzUhohmcrA1saJyw5Ssb42lyFBTtA2aoqE
+
+  - oauth_token:        74239362-0GoYpwYicXEvZkAzcsMNfkP6e8nZQMMYNDpqAfqtj
+    oauth_token_secret: qDDsPPMSuMBsVgCZjugYVaNCQxnDobQqfZ5Le3X7E
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
+
+  - oauth_token:        57954581-2eyspohjqkXIcGMig4Ry9bvgag8zcZmaEfC4IzYc
+    oauth_token_secret: kU6wQvx4fRpQk1u9KoYXUMbYZ0cmWIuwcDKcVYYnA
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
+
+  - oauth_token:        551253629-wnwp3wCJXP6R7aoXvq0scMmtFnBsoDGlkd6EAipA
+    oauth_token_secret: PmHm18RtKEgbIweTL5gSyIj9ZH4gZtpvBTD3Rx9i8
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
+
+  - oauth_token:        544462360-VQpkxYCCoc4yXH88TK4KvPxsm93BbRj4uPrnYtJc
+    oauth_token_secret: 5wDBr8AY09nBb48LAUg9OmHS7a9EvTVUAAadKjL0I
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
+
+  - oauth_token:        16450326-1X47fqPMeRAkyVVqFafdCJ4wR7QM46xlaYeSnlQrQ
+    oauth_token_secret: 9gJABBVY7Lw1iRxFPwpmy92Lu0ejCyMzoEUhWymSVg
+    consumer_key:       cmN0crWAu4PjgyKvS6Now
+    consumer_secret:    pYSBMjhodiZr4wNjj8DqGCInuSSG8DfggTiOkTtI
