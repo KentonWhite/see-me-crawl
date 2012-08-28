@@ -53,7 +53,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	end
 	
 	keya = Array[t, current_node.id]
-	@random_maps.store(keya, candidate_node)if !candidate_node.nil?
+	@random_maps.store(keya, candidate_node.id)if !candidate_node.nil?
 	
 	node
   end
@@ -68,7 +68,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	end
 	
 	keya = Array[t, current_node.id]
-	@random_maps.store(keya, node) if !node.nil?
+	@random_maps.store(keya, node.id) if !node.nil?
 	 
 	node
   end
@@ -78,10 +78,12 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
   
     keya = Array[t, current_node.id]
 	if @random_maps.has_key?(keya)
-		candidate_node = @random_maps[keya]
+    puts "Retrieving candiate for #{current_node.id} from cache"
+		candidate_node = current_node.new_node(@random_maps[keya])
 		return candidate_node
 	end
     
+  puts "Retrieving candiate for #{current_node.id}"
 	current_node.crawl! if current_node.crawled_at.nil?
     nodes = current_node.connections
        
