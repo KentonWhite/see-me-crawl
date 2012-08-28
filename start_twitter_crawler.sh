@@ -1,1 +1,1 @@
-unbuffer ruby ./twitter_crawler.rb >> log.txt &
+unbuffer ruby ./twitter_crawler_cftp.rb >> log.txt &
