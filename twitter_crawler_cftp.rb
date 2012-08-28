@@ -8,6 +8,7 @@ DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 
 DataMapper.auto_upgrade!
 DataMapper.repository(:local) { Sample.auto_upgrade! }
+DataMapper.repository(:local) { NonTrivialState.auto_upgrade! }
 
 #markov_chain = MetropolisHastingsMarkovChain.new
 
@@ -25,10 +26,19 @@ else
   
 end  
 
-p "first node  #{previous_node.id}"
-
 init_states = Array.new
-init_states.push previous_node
+non_trivial_states = DataMapper.repository(:local) { NonTrivialState.all }
+
+if non_trivial_states.empty? then
+  p "first node  #{previous_node.id}"
+  init_states.push previous_node
+else
+  puts "Restarting from with the following non trivial states:"
+  p non_trivial_states
+  non_trivial_states.each do |nts|
+    init_states.push TwitterNode.new(nts.node)
+  end
+end
 
 sample_size = 20
 min_coupling_time = 5

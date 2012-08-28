@@ -1,4 +1,5 @@
 require './lib/coupling_markov_chains.rb'
+require './lib/sample.rb'
 
 class CoupleFromThePast < CouplingMarkovChains
 
@@ -76,6 +77,7 @@ class CoupleFromThePast < CouplingMarkovChains
 	samplesize = 0
 	
 	begin
+    
 		curr_T = -1
 		old_T = 0	
 			
@@ -108,6 +110,11 @@ class CoupleFromThePast < CouplingMarkovChains
 		results = results.merge(curr_results)
 		
 		p "#{results.keys}"
+    DataMapper.repository(:local) do 
+      results.keys.each do |r|
+        state = NonTrivialState.first_or_create(node: r)
+      end
+    end
 	end while results.size < m or results.size > curr_size
 	results.values
  end

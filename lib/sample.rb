@@ -54,3 +54,11 @@ class Summary
   property :date, Date, key: true
   property :count, Integer
 end
+
+class NonTrivialState
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :node, Integer, min: 0, max: 2**32
+end
+
