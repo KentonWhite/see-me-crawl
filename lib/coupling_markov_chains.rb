@@ -69,7 +69,8 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	
 	keya = Array[t, current_node.id]
 	@random_maps.store(keya, node.id) if !node.nil?
-	 
+	
+  puts "Selected #{node.id}" 
 	node
   end
 
