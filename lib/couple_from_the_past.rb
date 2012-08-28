@@ -115,7 +115,7 @@ class CoupleFromThePast < CouplingMarkovChains
         state = NonTrivialState.first_or_create(node: r)
       end
     end
-	end while results.size < m or results.size > curr_size
+	end until results.size >= m or results.size <= curr_size
 	results.values
  end
 
