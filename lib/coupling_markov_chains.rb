@@ -121,7 +121,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	new_values = Hash.new()
 			
 	nodes.each_value do |x|
-		new_node = nextRWMH!(x, u, t, false)
+		new_node = nextRWMH!(x, u, t, true)
 		#new_node = nextRWMH(x, u, t, false)
 							
 		if !new_node.nil?
