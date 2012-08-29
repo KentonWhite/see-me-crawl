@@ -64,7 +64,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	candidate_node = select_candidate!(current_node, u, t)
 	node = candidate_node
 	if !rw
-		node = choose_node(current_node, candidate_node)
+		node = choose_node(current_node, candidate_node, u)
 	end
 	
 	keya = Array[t, current_node.id]
@@ -124,8 +124,8 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	new_values = Hash.new()
 			
 	nodes.each_value do |x|
-		new_node = nextRWMH!(x, u, t, true)
-		#new_node = nextRWMH(x, u, t, false)
+    new_node = nextRWMH!(x, u, t, false)
+    # new_node = nextRWMH(x, u, t, false)
 							
 		if !new_node.nil?
 			n = Node.get(new_node.id)
@@ -150,9 +150,13 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
   end
   
   # overriding
-  def accept?(candidate_node, current_node)
+  def choose_node(current_node, candidate_node, u)
+    accept?(candidate_node, current_node, u) ? candidate_node : current_node
+  end 
+
+  def accept?(candidate_node, current_node, u)
     #rand <= acceptance_probability!(current_node, candidate_node)  
-    rand <= acceptance_probability(current_node, candidate_node)
+    u % 1 <= acceptance_probability(current_node, candidate_node)
   end
   
   # the acceptance probability for MH; which is bias to high degree
