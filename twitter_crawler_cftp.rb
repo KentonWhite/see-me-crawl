@@ -48,7 +48,7 @@ non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_s
 p "cftp..."
 i = 0
 while i < sample_size do
-	samples = cftp(-1, non_trivial_states, min_coupling_time)
+	samples = cftp.cftp(-1, non_trivial_states, min_coupling_time)
 	
 	samples.each do |current_node|
 		sample.save!(current_node) { |node| node.degree }
