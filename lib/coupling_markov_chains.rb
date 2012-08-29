@@ -156,7 +156,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 
   def accept?(candidate_node, current_node, u)
     #rand <= acceptance_probability!(current_node, candidate_node)  
-    u % 1 <= acceptance_probability(current_node, candidate_node)
+    (u * current_node.degree.to_f) % 1 <= acceptance_probability(current_node, candidate_node)
   end
   
   # the acceptance probability for MH; which is bias to high degree
