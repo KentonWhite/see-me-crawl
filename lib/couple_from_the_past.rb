@@ -75,6 +75,8 @@ class CoupleFromThePast < CouplingMarkovChains
 	init_states.each {|e| results.store(e.id, e)}
 	
 	samplesize = 0
+  
+  return results.values if results.size >= dist
 	
 	begin
     
