@@ -12,14 +12,16 @@ class CoupleFromThePast < CouplingMarkovChains
   end 
  
  # refer to: Perfect Sampling Algorithms: Connections, Duncan Murdoch
- # m: initial time >0, nodes:states, {x}, dist: minimum iteration
+ # m: initial time <0, nodes:states, {x}, dist: minimum iteration
  
  def cftp(m, nodes, dist)
-	curr_T = -m
+	curr_T = m
 	old_T = 0
 	
 	random_seq = Array.new()
 	## @prng = Random.new()
+  
+  @random_maps.clear
 	
 	states = Hash.new
 	nodes.each{|e| states.store(e.id, e)}
@@ -29,9 +31,10 @@ class CoupleFromThePast < CouplingMarkovChains
 	
 	begin
 	
-		n = old_T - curr_T		
-		random_seq = random_numbers(n, @prng)
-		
+		n = old_T - curr_T
+    rs = random_numbers(n, @prng)		
+    random_seq = random_seq + rs
+    		
 		results = states
 		t = curr_T;
 		while t < 0 do
@@ -41,7 +44,7 @@ class CoupleFromThePast < CouplingMarkovChains
 		end
 		
 		old_T = curr_T
-		curr_T = -2 * curr_T
+		curr_T = 2 * curr_T
 		d += 1
 	end until d >= dist or results.size == 1 
 	results.values
