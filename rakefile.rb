@@ -31,6 +31,7 @@ task :migrate_to_counts do
       item.save 
       
       item = HashtagMhCount.first_or_new({hashtag: h.hashtag, date: h.hashtag_date}, {count: 0})
+      mh_count = repository(:default).adapter.select("select count(distinct s.id) as count from samples as s inner join hashtags as h on s.node = h.node where h.hashtag = '#{h.hashtag}'")
       item.count += 1
       log.info(item)
       item.save 
