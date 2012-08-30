@@ -124,4 +124,52 @@ class CoupleFromThePast < CouplingMarkovChains
 	results.values
  end
 
+ # online cftp, from aggregation_by_backward_coupling
+ # init_states, m: the maximum state space, dist: the minimum coupling time
+ # empirically, m = 100k, dist = 1000, for Facebook, domain-related setting
+ def online_cftp(init_states, m, dist)
+	
+	random_seq = Array.new()
+	@random_maps.clear				
+	
+	states = Hash.new
+	init_states.each {|e| states.store(e.id, e)}
+	
+	samplesize = 0
+	begin
+		curr_T = -1
+		old_T = 0	
+			
+		curr_size = states.size		
+		curr_results = Hash.new()
+		
+		d = 0
+		
+		begin	
+			#num = old_T - curr_T
+			num = - random_seq.size - curr_T
+			if num > 0
+				rs	= random_numbers(num, @prng)
+				random_seq = random_seq + rs
+			end
+			
+			curr_results = states
+			t = curr_T;
+			while t < 0 do
+				u = random_seq.at(-t-1)
+				
+				curr_results = update(curr_results, u, t);
+				t += 1;		
+			end
+			old_T = curr_T
+			curr_T = 2 * curr_T
+			d += 1
+			p "d=#{d} coalesce=#{curr_results.size}"
+		end until d >= dist or curr_results.size == 1
+				
+		p "states = #{states.keys}"
+		states = states.merge(curr_results)		
+	end until states.size >= m or (states.size <= curr_size and states.size > init_states.size)
+	curr_results.values
+
 end
