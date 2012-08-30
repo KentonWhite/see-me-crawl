@@ -25,13 +25,22 @@ task :migrate_to_counts do
   
   hashtags = repository(:default).adapter.select("SELECT DISTINCT(hashtag) as hashtag from hashtags")
   hashtags.each do |h|
-    log.info("Processing hashtag #{h}")
+    log.info("Processing hashtag #{h} -- Standard Counts")
     counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, hashtag_date as date from hashtags where hashtag = '#{h}' GROUP BY date")
     counts.each do |c|
       item = HashtagCount.new(hashtag: h, date: c.date, count: c.count)
       log.info(item)
       item.save
     end
+    
+    log.info("Processing hashtag #{h} -- MH Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, h.hashtag_date as date from samples AS s INNER JOIN hashtags AS h ON s.node = h.node where hashtag = '#{h}' GROUP BY date")
+    counts.each do |c|
+      item = HashtagMhCount.new(hashtag: h, date: c.date, count: c.count)
+      log.info(item)
+      item.save
+    end
+    
   end 
   
   log.info("Hastag migation complete")
