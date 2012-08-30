@@ -23,18 +23,14 @@ task :migrate_to_counts do
   
   log.info("Running hashtag migration")
   
-  Hashtag.each_chunk(100) do |hashtags|
-    hashtags.each do |h|
-      item = HashtagCount.first_or_new({hashtag: h.hashtag, date: h.hashtag_date}, {count: 0})
-      item.count += 1
+  hashtags = repository(:default).adapter.select("SELECT DISTINCT(hashtag) as hashtag from hashtags")
+  hashtags.each do |h|
+    log.info("Processing hashtag #{h}")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, hashtag_date as date from hashtags where hashtag = '#{h}' GROUP BY date")
+    counts.each do |c|
+      item = HashtagCount.new(hashtag: h, date: c.date, count: c.count)
       log.info(item)
-      item.save 
-      
-      item = HashtagMhCount.first_or_new({hashtag: h.hashtag, date: h.hashtag_date}, {count: 0})
-      mh_count = repository(:default).adapter.select("select count(distinct s.id) as count from samples as s inner join hashtags as h on s.node = h.node where h.hashtag = '#{h.hashtag}'")
-      item.count += 1
-      log.info(item)
-      item.save 
+      item.save
     end
   end 
   
