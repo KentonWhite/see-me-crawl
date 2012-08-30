@@ -26,6 +26,24 @@ class Hashtag
   property :hashtag_date, Date, index: true
 end
 
+class HashtagCount
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :date, Date, index: true
+  property :hashtag, String, index: true
+  property :count, Integer
+end
+
+class HashtagMhCount
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :date, Date, index: true
+  property :hashtag, String, index: true
+  property :count, Integer
+end
+
 class Mention
   include DataMapper::Resource
   
@@ -38,6 +56,24 @@ class Mention
   property :mention_date, Date, index: true
 end
 
+class MentionCount
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :date, Date, index: true
+  property :mention, String, index: true
+  property :count, Integer
+end
+
+class MentionMhCount
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :date, Date, index: true
+  property :mention, String, index: true
+  property :count, Integer
+end
+
 class Message
   include DataMapper::Resource
 
@@ -46,6 +82,20 @@ class Message
   property :created_at, DateTime
   property :message_time, DateTime  
   property :message_date, Date, index: true  
+end
+
+class MessageCount
+  include DataMapper::Resource
+
+  property :date, Date, key: true
+  property :count, Integer
+end
+
+class MessageMhCount
+  include DataMapper::Resource
+
+  property :date, Date, key: true
+  property :count, Integer
 end
 
 class Summary
