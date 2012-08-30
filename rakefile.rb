@@ -41,28 +41,43 @@ task :migrate_to_counts do
   #     item.save
   #   end
     
-    log.info("Running mention migration")
+  # log.info("Running mention migration")
+  # 
+  # mentions = repository(:default).adapter.select("SELECT DISTINCT(mention) as mention from mentions")
+  # mentions.each do |m|
+  #   log.info("Processing mention #{m} -- Standard Counts")
+  #   counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, mention_date as date from mentions where mention = '#{m}' GROUP BY date")
+  #   counts.each do |c|
+  #     item = MentionCount.new(mention: m, date: c.date, count: c.count)
+  #     log.info(item)
+  #     item.save
+  #   end
+  #   
+  #   log.info("Processing mention #{m} -- MH Counts")
+  #   counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.mention_date as date from samples AS s INNER JOIN mentions AS m ON s.node = m.node where mention = '#{m}' GROUP BY date")
+  #   counts.each do |c|
+  #     item = MentionMhCount.new(mention: m, date: c.date, count: c.count)
+  #     log.info(item)
+  #     item.save
+  #   end
+    
+  log.info("Running message migration")
   
-    mentions = repository(:default).adapter.select("SELECT DISTINCT(mention) as mention from mentions")
-    mentions.each do |m|
-      log.info("Processing mention #{m} -- Standard Counts")
-      counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, mention_date as date from mentions where mention = '#{m}' GROUP BY date")
-      counts.each do |c|
-        item = MentionCount.new(mention: m, date: c.date, count: c.count)
-        log.info(item)
-        item.save
-      end
+  log.info("Processing messages -- Standard Counts")
+  counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, message_date as date from messages GROUP BY date")
+  counts.each do |c|
+    item = MessageCount.new(date: c.date, count: c.count)
+    log.info(item)
+    item.save
+  end
     
-      log.info("Processing mention #{m} -- MH Counts")
-      counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.mention_date as date from samples AS s INNER JOIN mentions AS m ON s.node = m.node where mention = '#{m}' GROUP BY date")
-      counts.each do |c|
-        item = MentionMhCount.new(mention: m, date: c.date, count: c.count)
-        log.info(item)
-        item.save
-      end
-    
-    
-  end 
+  log.info("Processing messages -- MH Counts")
+  counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.message_date as date from samples AS s INNER JOIN mentions AS m ON s.node = m.node GROUP BY date")
+  counts.each do |c|
+    item = MessageMhCount.new(date: c.date, count: c.count)
+    log.info(item)
+    item.save
+  end
   
   log.info("Hastag migation complete")
   
