@@ -24,6 +24,7 @@ class Hashtag
   property :created_at, DateTime
   property :hashtag_time, DateTime
   property :hashtag_date, Date, index: true
+  property :processed, Boolean, default: true
 end
 
 class HashtagCount
@@ -54,6 +55,7 @@ class Mention
   property :created_at, DateTime
   property :mention_time, DateTime
   property :mention_date, Date, index: true
+  property :processed, Boolean, default: true
 end
 
 class MentionCount
@@ -82,6 +84,7 @@ class Message
   property :created_at, DateTime
   property :message_time, DateTime  
   property :message_date, Date, index: true  
+  property :processed, Boolean, default: true
 end
 
 class MessageCount
