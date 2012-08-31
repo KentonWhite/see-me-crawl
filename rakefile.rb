@@ -86,3 +86,96 @@ task :migrate_to_counts do
   log.info("End migration")
   
 end
+
+task :process_new_messages do
+  log.info("Start")
+  
+  log.info("Processing hashtags")
+  
+  hashtags = Hashtag.all(processed: false)
+  processed_hashtags = []
+  hashtags.each do |h|
+    p h
+    h.processed = true
+    h.save
+    next if processed_hashtags.include?(h.hashtag)
+    processed_hashtags << h.hashtag
+    log.info("Processing hashtag #{h.hashtag} -- Standard Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, hashtag_date as date from hashtags where hashtag = '#{h.hashtag}' and processed = false GROUP BY date")
+    counts.each do |c|
+      item = HashtagCount.first_or_new({hashtag: h.hashtag, date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+    
+    log.info("Processing hashtag #{h.hashtag} -- MH Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, h.hashtag_date as date from samples AS s INNER JOIN hashtags AS h ON s.node = h.node where hashtag = '#{h.hashtag}' and processed = false GROUP BY date")
+    counts.each do |c|
+      item = HashtagMhCount.first_or_new({hashtag: h.hashtag, date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+  end
+    
+  log.info("Processing mentions")
+  
+  mentions = Mention.all(processed: false)
+  processed_mentions = []
+  mentions.each do |m|
+    m.processed = true
+    m.save
+    next if processed_mentions.include?(m.mention)
+    processed_mentions << m.mention
+    log.info("Processing mention #{m.mention} -- Standard Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, mention_date as date from mentions where mention = '#{m.mention}' AND processed = false GROUP BY date")
+    counts.each do |c|
+      item = MentionCount.first_or_new({mention: m.mention, date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+    
+    log.info("Processing mention #{m} -- MH Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.mention_date as date from samples AS s INNER JOIN mentions AS m ON s.node = m.node where mention = '#{m.mention}' GROUP BY date")
+    counts.each do |c|
+      item = MentionMhCount.first_or_new({mention: m.mention, date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+  end
+    
+  log.info("Processing messages")
+  
+  messages = Message.all(processed: false)
+  processed_messages = []
+  messages.each do |m|
+    m.processed = true
+    m.save
+    next if processed_messages.include?(m.node)
+    log.info("Processing messages from #{m.node}  -- Standard Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(*) as count, message_date as date from messages WHERE node = #{m.node} AND processed = false GROUP BY date")
+    counts.each do |c|
+      item = MessageCount.first_or_new({date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+    
+    log.info("Processing messages -- MH Counts")
+    counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.message_date as date from samples AS s INNER JOIN messages AS m ON s.node = m.node WHERE m.node = #{m.node} AND m.processed = false GROUP BY date")
+    counts.each do |c|
+      item = MessageMhCount.first_or_new({date: c.date}, {count: 0})
+      item.count += c.count
+      log.info(item)
+      item.save
+    end
+  end
+  
+  log.info("Hastag migation complete")
+  
+  log.info("End migration")
+  
+end
