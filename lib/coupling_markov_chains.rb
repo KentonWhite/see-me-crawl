@@ -98,7 +98,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
       raise NoValidNextNode if nodes.empty?
       candidate_node = current_node.new_node(nodes.shift)
       # puts "candidate_node: #{candidate_node.id} private? #{candidate_node.private?}" 
-    end while candidate_node.private?
+    end while candidate_node.private? and candidate_node.degree == 0
     
     candidate_node
   end
@@ -121,21 +121,21 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
   # nodes: a hash of nodes; u: random number, t: current time step
   def update(nodes, u, t)
   
-	new_values = Hash.new()
+    new_values = Hash.new()
 			
-	nodes.each_value do |x|
-    new_node = nextRWMH!(x, u, t, false)
-    # new_node = nextRWMH(x, u, t, false)
-							
-		if !new_node.nil?
-			n = Node.get(new_node.id)
+    nodes.each_value do |x|
+      begin
+        new_node = nextRWMH!(x, u, t, false)
+        #new_node = nextRWMH(x, u, t, false)							
+      rescue => e
+        p e.message
+        p x
+        next		
+      end
+      new_values.store(new_node.id, new_node)
 		
-			new_node.crawl! if n.nil? or n == nil or new_node.crawled_at.nil?
-			new_values.store(new_node.id, new_node)
-		end
-		
-	end
-	new_values
+    end
+    new_values
   end
      
   # n: number of random values, prng: random generator

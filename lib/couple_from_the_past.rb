@@ -46,7 +46,7 @@ class CoupleFromThePast < CouplingMarkovChains
 		old_T = curr_T
 		curr_T = 2 * curr_T
 		d += 1
-	end until d >= dist or results.size == 1 
+	end until (d >= dist and dist > 0) or results.size == 1 
 	results.values
  end
  
@@ -110,7 +110,7 @@ class CoupleFromThePast < CouplingMarkovChains
 			curr_T = 2 * curr_T
 			d += 1
 			p "#{d}"
-		end until d >= dist or curr_results.size == 1
+		end until (d >= dist and dist > 0) or curr_results.size == 1
 		
 		results = results.merge(curr_results)
 		
@@ -120,13 +120,13 @@ class CoupleFromThePast < CouplingMarkovChains
         state = NonTrivialState.first_or_create(node: r)
       end
     end
-	end until results.size >= m or results.size <= curr_size
+	end until results.size >= m or (results.size > init_states.size and results.size <= curr_size)
 	results.values
  end
 
  # online cftp, from aggregation_by_backward_coupling
  # init_states, m: the maximum state space, dist: the minimum coupling time
- # empirically, m = 100k, dist = 1000, for Facebook, domain-related setting
+ # empirically, m = 100k, dist = 3000, for Facebook, domain-related setting
  def online_cftp(init_states, m, dist)
 	
 	random_seq = Array.new()
@@ -141,35 +141,34 @@ class CoupleFromThePast < CouplingMarkovChains
 		old_T = 0	
 			
 		curr_size = states.size		
-		curr_results = Hash.new()
+		results = Hash.new()
 		
 		d = 0
 		
 		begin	
-			#num = old_T - curr_T
 			num = - random_seq.size - curr_T
 			if num > 0
 				rs	= random_numbers(num, @prng)
 				random_seq = random_seq + rs
 			end
 			
-			curr_results = states
+			results = states
 			t = curr_T;
 			while t < 0 do
-				u = random_seq.at(-t-1)
-				
-				curr_results = update(curr_results, u, t);
-				t += 1;		
+				u = random_seq.at(-t-1)			
+				results = update(results, u, t);
+				t += 1;	
 			end
 			old_T = curr_T
 			curr_T = 2 * curr_T
 			d += 1
-			p "d=#{d} coalesce=#{curr_results.size}"
-		end until d >= dist or curr_results.size == 1
+			p "d=#{d} coalesce=#{results.size}, #{results.keys}"
+		end until (d >= dist and dist > 0) or results.size == 1
 				
-		p "states = #{states.keys}"
-		states = states.merge(curr_results)		
-	end until states.size >= m or (states.size <= curr_size and states.size > init_states.size)
-	curr_results.values
-
+		p "states = #{states.keys}"		
+		break if states.size >= m		
+		states = states.merge(results)
+	end until states.size > init_states.size and states.size <= curr_size
+	results.values
+ end
 end

@@ -40,20 +40,39 @@ else
   end
 end
 
-sample_size = 20
+# sample_size and min_coupling_time are domain-related, 
+# e.g., empirically, sample_size = 100k and min_coupling_time = 1000 in Facebook; 
+# In particular, min_coupling_time = 0 for undefined or no limited
+sample_size = 10
 min_coupling_time = 5
 
-non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_size, min_coupling_time)
+# generating a state space
+generating_non_trivial_states = false
+
+if generating_non_trivial_states
+	non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_size, min_coupling_time)
+end
 
 p "cftp..."
+
 i = 0
 while i < sample_size do
-	samples = cftp.cftp(-1, non_trivial_states, min_coupling_time)
+	
+	if generating_non_trivial_states
+		samples = cftp.cftp(-1, non_trivial_states, min_coupling_time)
+	else
+		# using online_cftp, and then not need non_trivial-states
+		samples = cftp.online_cftp(init_states, sample_size, min_coupling_time)
+	end
 	
 	samples.each do |current_node|
 		sample.save!(current_node) { |node| node.degree }
+		
+		# augment non-trivial states
+		init_states.push current_node
 	end
 	i += samples.size
+	p "samples =#{i}"
 end
 	
  
