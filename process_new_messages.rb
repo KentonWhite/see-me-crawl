@@ -82,8 +82,7 @@ while(true) do
       message_mh_count.save
     end
   end
-  
-  sleep 10
+  sleep 1
 end
   
 log.info("Ending message processing queue")
