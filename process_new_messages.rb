@@ -31,7 +31,7 @@ while(true) do
     counter.each do |date, tag, nodes|
       message_count = MessageCount.first_or_new({date: date}, {count: 0})
       message_count.count += nodes.count
-      message_mh_count = MentionMhCount.first_or_new({date: date}, {count: 0})
+      message_mh_count = MessageMhCount.first_or_new({date: date}, {count: 0})
       message_mh_count.count += Sample.count(node: nodes.to_a)
       message_count.save
       message_mh_count.save
