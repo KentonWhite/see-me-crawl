@@ -13,6 +13,9 @@ DataMapper.repository(:local) { Sample.auto_upgrade! }
 DataMapper.repository(:local) { Hashtag.auto_upgrade! }
 DataMapper.repository(:local) { Mention.auto_upgrade! }
 DataMapper.repository(:local) { Message.auto_upgrade! }
+DataMapper.repository(:local) { UnprocessedHashtag.auto_upgrade! }
+DataMapper.repository(:local) { UnprocessedMention.auto_upgrade! }
+DataMapper.repository(:local) { UnprocessedMessage.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new

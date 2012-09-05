@@ -27,6 +27,19 @@ class Hashtag
   property :processed, Boolean, default: true
 end
 
+class UnprocessedHashtag
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :node, Integer, min: 0, max: 2**32, index: true
+  property :message_id, Integer, min: 0, max: 2**64-1
+  property :hashtag, String, index: true
+  property :created_at, DateTime
+  property :hashtag_time, DateTime
+  property :hashtag_date, Date, index: true
+end
+
+
 class HashtagCount
   include DataMapper::Resource
 
@@ -58,6 +71,18 @@ class Mention
   property :processed, Boolean, default: true
 end
 
+class UnprocessedMention
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :node, Integer, min: 0, max: 2**32, index: true
+  property :message_id, Integer, min: 0, max: 2**64-1
+  property :mention, String, index: true
+  property :created_at, DateTime
+  property :mention_time, DateTime
+  property :mention_date, Date, index: true
+end
+
 class MentionCount
   include DataMapper::Resource
 
@@ -85,6 +110,16 @@ class Message
   property :message_time, DateTime  
   property :message_date, Date, index: true  
   property :processed, Boolean, default: true
+end
+
+class UnprocessedMessage
+  include DataMapper::Resource
+
+  property :id, Integer, min: 0, max: 2**64-1, key: true, unique: true
+  property :node, Integer, min: 0, max: 2**32, index: true
+  property :created_at, DateTime
+  property :message_time, DateTime  
+  property :message_date, Date, index: true  
 end
 
 class MessageCount
