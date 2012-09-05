@@ -35,6 +35,7 @@ while(true) do
       hashtag_count.save
       hashtag_mh_count.save
     end
+    log.info("Finished processing hashtags")
   end
     
   sleep 1

@@ -36,6 +36,7 @@ while(true) do
       message_count.save
       message_mh_count.save
     end
+    log.info("Finished processing messages")
   end
   sleep 1
 end

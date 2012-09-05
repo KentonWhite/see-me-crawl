@@ -37,6 +37,7 @@ while(true) do
       mention_count.save
       mention_mh_count.save
     end
+    log.info("Finished processing mentions")
   end
       
   sleep 1
