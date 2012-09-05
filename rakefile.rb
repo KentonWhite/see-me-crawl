@@ -97,21 +97,21 @@ task :process_new_messages do
   hashtags.each do |h|
     unless processed_hashtags.include?(h.hashtag) 
       processed_hashtags << h.hashtag
-      log.info("Processing hashtag #{h.hashtag} -- Standard Counts")
+      log.debug("Processing hashtag #{h.hashtag} -- Standard Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, hashtag_date as date from hashtags where hashtag = '#{h.hashtag}' and processed = false GROUP BY date")
       counts.each do |c|
         item = HashtagCount.first_or_new({hashtag: h.hashtag, date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     
-      log.info("Processing hashtag #{h.hashtag} -- MH Counts")
+      log.debug("Processing hashtag #{h.hashtag} -- MH Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, h.hashtag_date as date from samples AS s INNER JOIN hashtags AS h ON s.node = h.node where hashtag = '#{h.hashtag}' and processed = false GROUP BY date")
       counts.each do |c|
         item = HashtagMhCount.first_or_new({hashtag: h.hashtag, date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     end
@@ -126,21 +126,21 @@ task :process_new_messages do
   mentions.each do |m|
     unless processed_mentions.include?(m.mention) 
       processed_mentions << m.mention
-      log.info("Processing mention #{m.mention} -- Standard Counts")
+      log.debug("Processing mention #{m.mention} -- Standard Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, mention_date as date from mentions where mention = '#{m.mention}' AND processed = false GROUP BY date")
       counts.each do |c|
         item = MentionCount.first_or_new({mention: m.mention, date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     
-      log.info("Processing mention #{m.mention} -- MH Counts")
+      log.debug("Processing mention #{m.mention} -- MH Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.mention_date as date from samples AS s INNER JOIN mentions AS m ON s.node = m.node where mention = '#{m.mention}' GROUP BY date")
       counts.each do |c|
         item = MentionMhCount.first_or_new({mention: m.mention, date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     end
@@ -155,30 +155,27 @@ task :process_new_messages do
   messages.each do |m|
     unless processed_messages.include?(m.node) 
       processed_messages << m.node
-      log.info("Processing messages from #{m.node} -- Standard Counts")
+      log.debug("Processing messages from #{m.node} -- Standard Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(node)) as count, message_date as date from messages WHERE node = #{m.node} AND processed = false GROUP BY date")
       counts.each do |c|
         item = MessageCount.first_or_new({date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     
-      log.info("Processing messages from #{m.node} -- MH Counts")
+      log.debug("Processing messages from #{m.node} -- MH Counts")
       counts = repository(:default).adapter.select("SELECT COUNT(DISTINCT(s.id)) as count, m.message_date as date from samples AS s INNER JOIN messages AS m ON s.node = m.node WHERE m.node = #{m.node} AND m.processed = false GROUP BY date")
       counts.each do |c|
         item = MessageMhCount.first_or_new({date: c.date}, {count: 0})
         item.count += c.count
-        log.info(item)
+        log.debug(item)
         item.save
       end
     end
     m.processed = true
     m.save
   end
-  
-  log.info("Hastag migation complete")
-  
-  log.info("End migration")
+  log.info("End end")
   
 end
