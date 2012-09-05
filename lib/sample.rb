@@ -24,7 +24,6 @@ class Hashtag
   property :created_at, DateTime
   property :hashtag_time, DateTime
   property :hashtag_date, Date, index: true
-  property :processed, Boolean, default: true
 end
 
 class UnprocessedHashtag
@@ -68,7 +67,6 @@ class Mention
   property :created_at, DateTime
   property :mention_time, DateTime
   property :mention_date, Date, index: true
-  property :processed, Boolean, default: true
 end
 
 class UnprocessedMention
@@ -109,7 +107,6 @@ class Message
   property :created_at, DateTime
   property :message_time, DateTime  
   property :message_date, Date, index: true  
-  property :processed, Boolean, default: true
 end
 
 class UnprocessedMessage

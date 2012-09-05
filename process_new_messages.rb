@@ -28,10 +28,10 @@ while(true) do
     end
   
     counter.each do |date, tag, nodes|
-      hashtag_count = HashtagCount.first_or_new(date: date, hashtag: tag)
-      hashtag_count.count = nodes.count
-      hashtag_mh_count = HashtagMhCount.first_or_new(date: date, hashtag: tag)
-      hashtag_mh_count.count = Sample.count(node: nodes.to_a)
+      hashtag_count = HashtagCount.first_or_new({date: date, hashtag: tag}, {count: 0})
+      hashtag_count.count += nodes.count
+      hashtag_mh_count = HashtagMhCount.first_or_new({date: date, hashtag: tag}, {count: 0})
+      hashtag_mh_count.count += Sample.count(node: nodes.to_a)
       hashtag_count.save
       hashtag_mh_count.save
     end
@@ -51,10 +51,10 @@ while(true) do
     end
   
     counter.each do |date, tag, nodes|
-      mention_count = MentionCount.first_or_new(date: date, mention: tag)
-      mention_count.count = nodes.count
-      mention_mh_count = MentionMhCount.first_or_new(date: date, mention: tag)
-      mention_mh_count.count = Sample.count(node: nodes.to_a)
+      mention_count = MentionCount.first_or_new({date: date, mention: tag}, {count: 0})
+      mention_count.count += nodes.count
+      mention_mh_count = MentionMhCount.first_or_new({date: date, mention: tag}, {count: 0})
+      mention_mh_count.count += Sample.count(node: nodes.to_a)
       mention_count.save
       mention_mh_count.save
     end
@@ -74,10 +74,10 @@ while(true) do
     end
   
     counter.each do |date, tag, nodes|
-      message_count = MessageCount.first_or_new(date: date)
-      message_count.count = nodes.count
-      message_mh_count = MentionMhCount.first_or_new(date: date)
-      message_mh_count.count = Sample.count(node: nodes.to_a)
+      message_count = MessageCount.first_or_new({date: date}, {count: 0})
+      message_count.count += nodes.count
+      message_mh_count = MentionMhCount.first_or_new({date: date}, {count: 0})
+      message_mh_count.count += Sample.count(node: nodes.to_a)
       message_count.save
       message_mh_count.save
     end
