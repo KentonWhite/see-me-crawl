@@ -2,9 +2,9 @@ require './lib/couple_from_the_past.rb'
 require './lib/z_sample.rb'
 require './lib/twitter_node.rb'  
 
-DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
+DataMapper.setup(:default, adapter: 'postgres', host: 'ec2-23-21-119-36.compute-1.amazonaws.com', port: 5432, database: 'd4v6cj037h29c7', user: 'nedardynmyjtbv', password: '0kaxSe1KU3YF8czv6jXUj0Qy4T')
 
-DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
+DataMapper.setup(:local, adapter: 'postgres', host: 'ec2-23-21-119-36.compute-1.amazonaws.com', port: 5432, database: 'd4v6cj037h29c7', user: 'nedardynmyjtbv', password: '0kaxSe1KU3YF8czv6jXUj0Qy4T')
 
 DataMapper.auto_upgrade!
 DataMapper.repository(:local) { Sample.auto_upgrade! }
