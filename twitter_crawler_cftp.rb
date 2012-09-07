@@ -56,20 +56,22 @@ end
 p "cftp..."
 
 i = 0
-while i < sample_size do
+while true do
 	
 	if generating_non_trivial_states
 		samples = cftp.cftp(-1, non_trivial_states, min_coupling_time)
 	else
 		# using online_cftp, and then not need non_trivial-states
-		samples = cftp.online_cftp(init_states, sample_size, min_coupling_time)
+		#samples = cftp.online_cftp(init_states, sample_size, min_coupling_time)
+		samples = cftp.increment_cftp(init_states)
 	end
 	
+  p samples
 	samples.each do |current_node|
 		sample.save!(current_node) { |node| node.degree }
 		
 		# augment non-trivial states
-		init_states.push current_node
+		init_states = [current_node]
 	end
 	i += samples.size
 	p "samples =#{i}"

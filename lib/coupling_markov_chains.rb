@@ -58,31 +58,28 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	node
   end
   
-  # define a random map using RW/MH, another efficient method
+  # find an valid candidate using the random maps and the modified RW/MH, another efficient method
   # rw: true-RW/false-MH
   def nextRWMH!(current_node, u, t, rw)
+  
+    keya = Array[t, current_node.id]
+	if @random_maps.has_key?(keya)
+		node = @random_maps[keya]
+		return node
+	end
+	
 	candidate_node = select_candidate!(current_node, u, t)
 	node = candidate_node
 	if !rw
 		node = choose_node(current_node, candidate_node, u)
 	end
-	
-	keya = Array[t, current_node.id]
-	@random_maps.store(keya, node.id) if !node.nil?
-	
+		
   puts "Selected #{node.id}" 
 	node
   end
 
-  # select candidate with u given t by using randon maps
+  # select a candidate with u given t, and discard those degree == 0
   def select_candidate!(current_node, u, t)
-  
-    keya = Array[t, current_node.id]
-	if @random_maps.has_key?(keya)
-    puts "Retrieving candiate for #{current_node.id} from cache"
-		candidate_node = current_node.new_node(@random_maps[keya])
-		return candidate_node
-	end
     
   puts "Retrieving candiate for #{current_node.id}"
 	current_node.crawl! if current_node.crawled_at.nil?
@@ -117,26 +114,27 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
   return arr
  end
 
-  # the update function for random maps in coupling techniques
-  # nodes: a hash of nodes; u: random number, t: current time step
-  def update(nodes, u, t)
-  
-    new_values = Hash.new()
-			
-    nodes.each_value do |x|
-      begin
-        new_node = nextRWMH!(x, u, t, false)
-        #new_node = nextRWMH(x, u, t, false)							
-      rescue => e
-        p e.message
-        p x
-        next		
-      end
-      new_values.store(new_node.id, new_node)
-		
-    end
-    new_values
-  end
+ # the update function for random maps in coupling techniques
+ # nodes: a hash of nodes; u: random number, t: current time step
+ def update(nodes, u, t) 
+   new_values = Hash.new()
+   nodes.each_value do |x|
+     begin
+       new_node = nextRWMH!(x, u, t, false)
+       #new_node = nextRWMH(x, u, t, false)							
+     rescue => e
+       p e.message
+       p x.id
+       #gets
+       next		
+     end
+      
+     new_values.store(new_node.id, new_node)
+  keya = Array[t, x.id]
+  @random_maps.store(keya, new_node) if !@random_maps.has_key?(keya)			 
+   end
+   new_values
+ end
      
   # n: number of random values, prng: random generator
   def random_numbers(n, prng)
