@@ -70,6 +70,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	
 	candidate_node = select_candidate!(current_node, u, t)
 	node = candidate_node
+  return node if candidate_node.private? || candidate_node.degree == 0
 	if !rw
 		node = choose_node(current_node, candidate_node, u)
 	end
@@ -91,13 +92,12 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
     # rng = nodes.size * u + 1 
     #nodes.shuffle!(Randon.new(rng.to_i)), in Ruby 1.9.3
     # nodes = shuffle(nodes, rng.to_i)
-    begin
-      raise NoValidNextNode if nodes.empty?
+    # begin
+    #   raise NoValidNextNode if nodes.empty?
       # candidate_node = current_node.new_node(nodes.shift)
       candidate_node = current_node.new_node(nodes[(u*nodes.size).floor])
       # puts "candidate_node: #{candidate_node.id} private? #{candidate_node.private?}" 
-    end while candidate_node.private? and candidate_node.degree == 0
-    
+    # end while candidate_node.private? and candidate_node.degree == 0
     candidate_node
   end
   

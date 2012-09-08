@@ -41,11 +41,11 @@ class BaseNode
   end
   
   def friends
-    @friends ||= (puts "Friends SelectGet"; Edge.all(n1: id).map { |e| e.n2 })
+    @friends ||= (Edge.all(n1: id).map { |e| e.n2 })
   end
   
   def followers
-    @followers ||= (puts "Followers SelectGet"; Edge.all(n2: id).map { |e| e.n1 })    
+    @followers ||= (Edge.all(n2: id).map { |e| e.n1 })    
   end
   
   def private?
@@ -82,7 +82,6 @@ class BaseNode
     n = Node.first(id: id)
     @visited_at = DateTime.now
     params = columns.reduce({}) { |h,p| h[p] = self.send(p); h }
-    puts "Save! PutAttribute" 
     if n
       n.update(params)
     else
@@ -134,7 +133,6 @@ class BaseNode
   private
   
   def populate_from_db
-    puts "Populate SelectGet"
     n = Node.get(id)
     if n
       columns.each { |col| self.instance_variable_set("@#{col}", n.send(col)) }
