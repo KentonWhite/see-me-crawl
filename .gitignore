@@ -1,7 +1,7 @@
 *.db
 *.db-journal
 log.txt
-config/twitter.yml
+config/*
 R/*
 .RData
 .Rhistory

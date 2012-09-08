@@ -65,7 +65,7 @@ while true do
 	else
 		# using online_cftp, and then not need non_trivial-states
 		#samples = cftp.online_cftp(init_states, sample_size, min_coupling_time)
-		samples = cftp.increment_cftp(init_states)
+		samples = cftp.increment_cftp(init_states, -5, -32)
 	end
 	
   p samples

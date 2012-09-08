@@ -84,16 +84,17 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
   puts "Retrieving candiate for #{current_node.id}"
 	current_node.crawl! if current_node.crawled_at.nil?
     nodes = current_node.connections
+    nodes.sort!
        
     #nodes.shuffle!
     
-    rng = nodes.size * u + 1 
+    # rng = nodes.size * u + 1 
     #nodes.shuffle!(Randon.new(rng.to_i)), in Ruby 1.9.3
-    
-    nodes = shuffle(nodes, rng.to_i)
+    # nodes = shuffle(nodes, rng.to_i)
     begin
       raise NoValidNextNode if nodes.empty?
-      candidate_node = current_node.new_node(nodes.shift)
+      # candidate_node = current_node.new_node(nodes.shift)
+      candidate_node = current_node.new_node(nodes[(u*nodes.size).floor])
       # puts "candidate_node: #{candidate_node.id} private? #{candidate_node.private?}" 
     end while candidate_node.private? and candidate_node.degree == 0
     
