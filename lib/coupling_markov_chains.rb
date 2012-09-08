@@ -70,7 +70,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 	
 	candidate_node = select_candidate!(current_node, u, t)
 	node = candidate_node
-  return node if candidate_node.private? || candidate_node.degree == 0
+  return current_node if node.private? || candidate_node.degree == 0
 	if !rw
 		node = choose_node(current_node, candidate_node, u)
 	end
