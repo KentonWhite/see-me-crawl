@@ -75,7 +75,6 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
 		node = choose_node(current_node, candidate_node, u)
 	end
 		
-  puts "Selected #{node.id}" 
 	node
   end
 
@@ -121,7 +120,9 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
    new_values = Hash.new()
    nodes.each_value do |x|
      begin
-       new_node = nextRWMH!(x, u, t, false)
+       new_node = nextRWMH!(x, u, t, false)  
+       puts "Selected #{new_node.id}" 
+
        #new_node = nextRWMH(x, u, t, false)							
      rescue => e
        p e.message
