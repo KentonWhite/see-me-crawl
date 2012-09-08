@@ -29,18 +29,18 @@ else
 end  
 
 init_states = Array.new
-non_trivial_states = DataMapper.repository(:local) { NonTrivialState.all }
-
-if non_trivial_states.empty? then
-  p "first node  #{previous_node.id}"
+# non_trivial_states = DataMapper.repository(:local) { NonTrivialState.all }
+non_trivial_states = []
+# if non_trivial_states.empty? then
+#   p "first node  #{previous_node.id}"
   init_states.push previous_node
-else
-  puts "Restarting from with the following non trivial states:"
-  p non_trivial_states
-  non_trivial_states.each do |nts|
-    init_states.push TwitterNode.new(nts.node)
-  end
-end
+# else
+#   puts "Restarting from with the following non trivial states:"
+#   p non_trivial_states
+#   non_trivial_states.each do |nts|
+#     init_states.push TwitterNode.new(nts.node)
+#   end
+# end
 
 # sample_size and min_coupling_time are domain-related, 
 # e.g., empirically, sample_size = 100k and min_coupling_time = 1000 in Facebook; 
@@ -53,7 +53,7 @@ generating_non_trivial_states = true
 
 if generating_non_trivial_states && non_trivial_states.empty?
 	non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_size, min_coupling_time)
-  non_trivial_states.each { |nts| DataMapper.repository(:local) { NonTrivialState.create(node: nts.id)}}
+  # non_trivial_states.each { |nts| DataMapper.repository(:local) { NonTrivialState.create(node: nts.id)}}
 end
 
 p "cftp..."
