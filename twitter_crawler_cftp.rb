@@ -49,10 +49,11 @@ sample_size = 10
 min_coupling_time = 5
 
 # generating a state space
-generating_non_trivial_states = false
+generating_non_trivial_states = true
 
-if generating_non_trivial_states
+if generating_non_trivial_states && non_trivial_states.empty?
 	non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_size, min_coupling_time)
+  non_trivial_states.each { |nts| DataMapper.repository(:local) { NonTrivialState.create(node: nts.id)}}
 end
 
 p "cftp..."
