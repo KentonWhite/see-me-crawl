@@ -49,7 +49,7 @@ sample_size = 10
 min_coupling_time = 5
 
 # generating a state space
-generating_non_trivial_states = true
+generating_non_trivial_states = false
 
 # if generating_non_trivial_states && non_trivial_states.empty?
 #   non_trivial_states = cftp.aggregation_by_backward_coupling(init_states, sample_size, min_coupling_time)
