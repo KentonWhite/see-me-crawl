@@ -124,6 +124,70 @@ class CoupleFromThePast < CouplingMarkovChains
     results.values
   end
 
+  # Sept 9, 2012, John
+  #
+  # description: given initial states, the algorithm produces non-trivial states for further perfect sampling.
+  # The results for non trivial states are obtained in terms of tm, the minimum coupling time,
+  # and then mutiple repetitions for aggregation; the general requirement about non-trivial states is 
+  # independent enough among non trivial states.
+  #
+  # note: an alternative to aggregation_by_backward_coupling algorithm (where m = max_size, dist = tm)
+  #
+  # t0: initial time translation, tm: minimum coupling time,
+  # t0, tm, num_iterations, max_size: all are domain related parameters; they can be empirically set;
+  #
+  def non_trivial_states(init_states, max_size = 1024, tm = -32, t0 = 0, num_iterations = 100)
+	
+    prng = Random.new()
+    random_seq = Array.new()
+	
+    n_states = Hash.new
+    init_states.each {|e| n_states.store(e.id, e)}
+	  
+    return n_states.values if n_states.size >= max_size
+	
+    for i in 0..num_iterations - 1
+    
+      curr_T = -1
+      old_T = 0	
+		
+      @random_maps.clear				
+      random_seq.clear
+			
+      curr_size = n_states.size
+      begin	
+        num = old_T - curr_T - t0
+        rs	= random_numbers(num, prng)
+        random_seq = random_seq + rs
+			
+        results = n_states
+			
+        t = curr_T + t0;
+        while t < 0 do
+          u = random_seq.at(-t-1)			
+          results = update(results, u, t)
+          t += 1
+        end
+						
+        n_states.merge!(results)
+        break if curr_T <= tm
+
+        old_T = curr_T
+        curr_T = 2 * curr_T
+      end while true
+				
+      p "#{n_states.keys}"
+		
+      DataMapper.repository(:local) do 
+        n_states.keys.each do |r|
+          state = NonTrivialState.first_or_create(node: r)
+        end
+      end	
+      break if n_states.size >= max_size or n_states.size == curr_size
+    end 
+    n_states.values
+  end
+
   # online cftp, from aggregation_by_backward_coupling
   # init_states, m: the maximum state space, dist: the minimum coupling time
   # empirically, m = 100k, dist = 3000, for Facebook, domain-related setting
@@ -171,17 +235,21 @@ class CoupleFromThePast < CouplingMarkovChains
     end until states.size > init_states.size and states.size <= curr_size
     results.values
   end
-  # John, Sept 5, 2012
+  # Sept 9, 2012, John
+  # Description: Given an initial_states, which is regarded as non-trivial states, 
+  # this produces a perfect sample by using a new method for coupling, which is called 
+  # the generalized backward coupling technique.
+  #
+  # Note: an alternative to online_cftp, and it is used together with other algorithms for generating non-trivial states, e.g., 
+  # aggregation_by_backward_coupling or non_trivial_states algorithms
+  #
+  # Inputs: init_states, which is used as non-trivial states, are generated beforehand, 
+  # e.g., by aggregation_by_backward_coupling, those non-trivial states are required to be independent nodes; 
+  # t0 = 0 or -5, initial time translation; 
+  # tm, default = -32, the minimum coupling time (empirical guess), which can be automatically learned
   # 
-  # init_states, m: the maximum state space, dist: the minimum coupling time
-  # by default, the initial translate time, t0 = 0 or -5; the minimum coalescence time, tm = -2^10 = -1024, domain-related setting
-  #
-  # improved online_cftp:
-  # 1) t0 for avoiding a trivial stop;
-  # 1) automatically learn tm; 
-  # 2) the stop condition is to coelesce to single value.
-  #
-  def increment_cftp(init_states, t0 = -5, tm = -1024)
+
+  def generalized_cftp(init_states, t0 = -5, tm = -32)
 	
     random_seq = Array.new()
     @random_maps.clear				
@@ -189,72 +257,123 @@ class CoupleFromThePast < CouplingMarkovChains
     # generated non-trivial states
     n_states = Hash.new
 	
+    init_states.each {|e| n_states.store(e.id, e)}
+	
     # working states
-    w_states = Hash.new
+    w_states = n_states.clone
 	
     # visited intermediate states
-    v_states = Hash.new
+    v_states = n_states.clone
 	
-    init_states.each {|e| w_states.store(e.id, e)}
-
     curr_T = -1
     old_T = 0
 	
     begin	
-      begin	
-        p w_states.keys	
-        num = - random_seq.size - curr_T - t0
-        if num > 0
-          rs	= random_numbers(num, @prng)
-          random_seq = random_seq + rs
-        end
-			
-        results = w_states
-			
-        t = curr_T + t0;
-        while t < 0 do
-          u = random_seq.at(-t-1)		
-          puts "Time step:\t#{t}.  Calling update..."	
-          results = update(results, u, t);
-          puts "update done!"
-          p results.keys
-          t += 1;	
-        end
+      num = - random_seq.size - curr_T - t0
+      if num > 0
+        rs	= random_numbers(num, @prng)
+        random_seq = random_seq + rs
+      end
+		
+      results = w_states
+		
+      t = curr_T + t0;
+      while t < 0 do
+        u = random_seq.at(-t-1)			
+        results = update(results, u, t);
+        t += 1;	
+      end
 				
-        puts "Curr_T:\t#{curr_T}\ttm:\t#{tm}"	
-        if curr_T <= tm
-          puts "Results size:\t#{results.size}"
-          return results.values if results.size == 1
-			
-          puts "Pruning w_states"
-          p v_states.keys
-          w_states = results.delete_if{|k, x| v_states.has_key?(k)}
-          p w_states.keys
-          break if w_states.empty?
-				
-          v_states.merge!(results)
-          next
-        else
-          w_states.merge!(results)
-          n_states = w_states				
-        end
-        old_T = curr_T
-        curr_T = 2 * curr_T
-        p "w_states#{w_states.size}"
-      end while true
+      return results.values if results.size == 1	
 		
-      # p "w_states#{w_states.size}"	
-      puts "n_states"
-      p n_states.keys
-		
-      w_states = n_states
-      v_states.clear
-		
+      w_states = results
+      w_states.delete_if{|k, x| v_states.has_key?(k)}
+      if !w_states.empty?
+        v_states.merge!(w_states)
+        next
+      end
+      w_states = n_states.clone
+      v_states = n_states.clone		
+
       old_T = curr_T
       curr_T = 2 * curr_T
+      #p "w_states#{w_states.size}"
+    end while true
+  end 
+
+  # John, Sept 5, 2012, modified Sept 9, 2012
+  # 
+  # Description: given initial states for starting, the algorithm produces a perfect sample by
+  # creating a non-trivial state set and using the generalized backward coupling technique proposed 
+  # in this new research
+  #
+  # input: init_states for starting; 
+  # t0 and tm: by default, the initial translate time, t0 = 0 or -5; 
+  # the minimum coalescence time, tm = -2^10 = -1024, domain-related setting
+  #
+  # improved online_cftp by combination of aggregation_by_backward_coupling and online_cftp:
+  # 1) t0 for avoiding a trivial stop;
+  # 2) automatically learn tm; 
+  # 3) the stop condition is to coelesce to single value.
+  #
+  def increment_cftp(init_states, t0 = -0, tm = -32)
+	
+    random_seq = Array.new()
+    @random_maps.clear				
+	
+    # resulting non-trivial states
+    n_states = Hash.new
+	
+    # working states
+    w_states = Hash.new
+	
+    init_states.each {|e| w_states.store(e.id, e)}
+
+    # visited intermediate states
+    v_states = Hash.new
+	
+    curr_T = -1
+    old_T = 0
+	
+    begin	
+      num = - random_seq.size - curr_T - t0
+      if num > 0
+        rs	= random_numbers(num, @prng)
+        random_seq = random_seq + rs
+      end
 		
-      # stop backward coupling (or continue for autmatically learning tm)
-      # break
+      results = w_states
+		
+      t = curr_T + t0;
+      while t < 0 do
+        u = random_seq.at(-t-1)			
+        results = update(results, u, t);
+        t += 1;	
+      end
+				
+      if curr_T <= tm
+        return results.values if results.size == 1
+			
+        w_states = results
+        w_states.delete_if{|k, x| v_states.has_key?(k)}
+			
+        if !w_states.empty?
+          v_states.merge!(w_states)
+          #p "propagation: w_states#{w_states.size}"
+          next
+        end
+        w_states = n_states.clone
+        v_states = n_states.clone
+      else
+        w_states.merge!(results)
+        n_states = w_states.clone
+        v_states = w_states.clone
+      end
+      #p "0? #{w_states.size}, #{v_states.size}, #{n_states.size}"
+
+      old_T = curr_T
+      curr_T = 2 * curr_T
+      #p "backward: w_states#{w_states.size}"
     end while true
   end 
 end
