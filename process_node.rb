@@ -26,8 +26,10 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
     case metadata.type
     when "new_samples"
       puts "Receive message for node #{payload}"
-      node = HashtagTwitterNode.new(payload.to_i)
-      node.check_hashtag
+      unless UnprocessedMessage.count(node: payload) > 0 
+        node = HashtagTwitterNode.new(payload.to_i)
+        node.check_hashtag
+      end
     end
     
     metadata.ack
