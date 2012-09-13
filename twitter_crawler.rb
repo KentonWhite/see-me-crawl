@@ -3,6 +3,8 @@ require './lib/no_converge_sample.rb'
 require './lib/hashtag_twitter_node.rb'  
 require './lib/entropy.rb'
 
+require 'bunny'
+
 DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
 
 DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
@@ -20,6 +22,11 @@ DataMapper.repository(:local) { UnprocessedMessage.auto_upgrade! }
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new
 
+ampq = Bunny.new('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21146/gqezbdhq')
+ampq.start
+
+exchange = ampq.exchange("")
+
 if sample.last_node
   previous_node = HashtagTwitterNode.new(sample.last_node)
 else
@@ -27,7 +34,7 @@ else
 end  
   previous_node.crawl!
 
-until sample.converged? 
+while true
   begin
     current_node = markov_chain.next(previous_node)
   rescue => e
@@ -37,9 +44,12 @@ until sample.converged?
   end
   p current_node.id
   current_node.crawl! 
-  sample.save!(current_node) { |node| current_node.hashtag? }
+  sample.save!(current_node) { |node| 0 }
+  puts "Sending message node = #{current_node.id}"
+  exchange.publish(current_node.id, type: 'new_samples', key: 'com.girih.samples')
   previous_node = current_node
 end
 
 puts sample.expectation_value
 p sample.last
+

@@ -10,8 +10,6 @@ class HashtagTwitterNode < TwitterNode
     @hashtag ||= check_hashtag
   end
   
-  private
-  
   def check_hashtag
     begin
       statuses = client.user_timeline(id, :count  => 200, :include_rts => true)
