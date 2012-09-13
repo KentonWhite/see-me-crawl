@@ -45,7 +45,7 @@ while true
   p current_node.id
   current_node.crawl! 
   sample.save!(current_node) { |node| 0 }
-  puts "Sending message node = #{current_node.id}"
+  puts "Sending message for node #{current_node.id}"
   exchange.publish(current_node.id, type: 'new_samples', key: 'com.girih.samples')
   previous_node = current_node
 end

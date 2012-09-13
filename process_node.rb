@@ -25,6 +25,7 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
   channel.queue("com.girih.samples", :durable => true, :auto_delete => false).subscribe(:ack => true) do |metadata, payload|
     case metadata.type
     when "new_samples"
+      puts "Receive message for node #{payload}"
       node = HashtagTwitterNode.new(payload.to_i)
       node.check_hashtag
     end
