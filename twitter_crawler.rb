@@ -2,6 +2,7 @@ require './lib/metropolis_hastings_markov_chain.rb'
 require './lib/no_converge_sample.rb'
 require './lib/hashtag_twitter_node.rb'  
 require './lib/entropy.rb'
+require './lib/couple_from_the_past.rb'
 
 require 'bunny'
 
@@ -27,7 +28,7 @@ end
   previous_node.crawl!
 
 while true
-  small_set = cft.aggregation_by_backward_coupling([previous_node], sample_size, min_coupling_time)
+  small_set = cftp.aggregation_by_backward_coupling([previous_node], sample_size, min_coupling_time)
   samples = cftp.cftp(-1, small_set, min_coupling_time)
   samples.eac do |current_node|
     puts "Sampled #{current_node}"
