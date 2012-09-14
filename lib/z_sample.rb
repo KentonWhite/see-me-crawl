@@ -28,9 +28,7 @@ class ZSample < BaseSample
   end 
   
   def tail(field, percent, order)
-    DataMapper.repository(:local) do
-      Sample.all(:fields => [field], :order => [:id.send(order)], :limit => (count*percent).ceil).map {|s| s.send(field)}
-    end
+    Sample.all(:fields => [field], :order => [:id.send(order)], :limit => (count*percent).ceil).map {|s| s.send(field)}
   end
   
   def in_confidence_interval?(interval)

@@ -3,19 +3,10 @@ require './lib/hashtag_twitter_node.rb'
 
 require 'amqp'
 
-DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
+DataMapper.setup(ENV['DATABASE_URL'])
 
-DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
 
 DataMapper.auto_upgrade!
-
-DataMapper.repository(:local) { Sample.auto_upgrade! }
-DataMapper.repository(:local) { Hashtag.auto_upgrade! }
-DataMapper.repository(:local) { Mention.auto_upgrade! }
-DataMapper.repository(:local) { Message.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedHashtag.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedMention.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedMessage.auto_upgrade! }
 
 AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21146/gqezbdhq') do |connection|
   channel    = AMQP::Channel.new(connection, :auto_recovery => true)

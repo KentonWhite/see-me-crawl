@@ -10,11 +10,9 @@ class Entropy
   end
   
   def load_distribution
-    DataMapper.repository(:local) do
-      Sample.each_chunk(20) do |chunk|
-        chunk.each do |s|
-          add_node s
-        end
+    Sample.each_chunk(20) do |chunk|
+      chunk.each do |s|
+        add_node s
       end
     end
   end

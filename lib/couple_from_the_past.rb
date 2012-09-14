@@ -115,10 +115,8 @@ class CoupleFromThePast < CouplingMarkovChains
       results = results.merge(curr_results)
 		
       p "#{results.keys}"
-      DataMapper.repository(:local) do 
-        results.keys.each do |r|
-          state = NonTrivialState.first_or_create(node: r)
-        end
+      results.keys.each do |r|
+        state = NonTrivialState.first_or_create(node: r)
       end
     end until results.size >= m or (results.size > init_states.size and results.size <= curr_size)
     results.values
@@ -181,11 +179,9 @@ class CoupleFromThePast < CouplingMarkovChains
       puts "n_states:"	
       p "#{n_states.keys}"
 		
-      DataMapper.repository(:local) do 
-        n_states.keys.each do |r|
-          state = NonTrivialState.first_or_create(node: r)
-        end
-      end	
+      n_states.keys.each do |r|
+        state = NonTrivialState.first_or_create(node: r)
+      end
       break if n_states.size >= max_size or n_states.size == curr_size
     end 
     n_states.values
@@ -560,7 +556,7 @@ class CoupleFromThePast < CouplingMarkovChains
     values = generalized_cftp(init_states, 0, -32)
     x = values[0]
     # samples.push x
-		samples.save!(x) { |node| node.degree }
+    samples.save!(x) { |node| node.degree }
 	
     # clean @random_maps, generated from generalized_cftp(..)
     @random_maps.clear
@@ -572,7 +568,7 @@ class CoupleFromThePast < CouplingMarkovChains
       #x = nextRWMH(x, u, 0, false)
 			
       # samples.push x
-  		samples.save!(x) { |node| node.degree }
+      samples.save!(x) { |node| node.degree }
 		
     end while samples.count < sample_size
   end

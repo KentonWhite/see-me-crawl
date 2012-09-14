@@ -30,9 +30,7 @@ describe ZSample do
     
     %w(node value monitor).each do |attr|
       it "should have #{attr}" do
-        DataMapper.repository(:local) do  
-          Sample.last.send(attr.to_sym).to_s.should == @zsample[attr.to_sym].to_s 
-        end
+        Sample.last.send(attr.to_sym).to_s.should == @zsample[attr.to_sym].to_s 
       end
     end
   end

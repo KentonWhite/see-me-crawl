@@ -5,24 +5,14 @@ require './lib/entropy.rb'
 
 require 'bunny'
 
-DataMapper.setup(:default, adapter: 'mysql', database: 'graph', user: 'root')
-
-DataMapper.setup(:local, adapter: 'mysql', database: 'sample', user: 'root')
+DataMapper.setup(ENV['DATABASE_URL'])
 
 DataMapper.auto_upgrade!
-
-DataMapper.repository(:local) { Sample.auto_upgrade! }
-DataMapper.repository(:local) { Hashtag.auto_upgrade! }
-DataMapper.repository(:local) { Mention.auto_upgrade! }
-DataMapper.repository(:local) { Message.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedHashtag.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedMention.auto_upgrade! }
-DataMapper.repository(:local) { UnprocessedMessage.auto_upgrade! }
 
 markov_chain = MetropolisHastingsMarkovChain.new
 sample = NoConvergeSample.new
 
-ampq = Bunny.new('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21146/gqezbdhq')
+ampq = Bunny.new(ENV['RABBITMQ_URL'])
 ampq.start
 
 exchange = ampq.exchange("")

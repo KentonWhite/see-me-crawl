@@ -20,28 +20,22 @@ class HashtagTwitterNode < TwitterNode
     hashtag_found = 0
     statuses.each do |s|
       next if Message.count(id: s.id) > 0 || UnprocessedMessage.count(id: s.id) > 0
-      DataMapper.repository(:local) do
-        begin
-          UnprocessedMessage.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
-        rescue DataObjects::SQLError => e
-          p e.message
-          retry
-        end
+      begin
+        UnprocessedMessage.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
+      rescue DataObjects::SQLError => e
+        p e.message
+        retry
       end
       if s.text =~ @@hashtag_regex then
         hashtag_found = 1
       end
       hastags = s.text.scan(/[#]\w+/i)
       hastags.each do |h|
-        DataMapper.repository(:local) do
-          UnprocessedHashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
-        end
+        UnprocessedHashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
       end
       mentions = s.text.scan(/[\@]\w+/i)
       mentions.each do |m|
-        DataMapper.repository(:local) do
-          UnprocessedMention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
-        end
+        UnprocessedMention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
       end
     end
     return hashtag_found

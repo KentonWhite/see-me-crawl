@@ -1,0 +1,1 @@
+sampler: bundle exec ruby twitter_crawler.rb
