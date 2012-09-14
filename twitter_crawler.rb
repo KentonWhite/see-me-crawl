@@ -9,8 +9,10 @@ DataMapper.setup(ENV['DATABASE_URL'])
 
 DataMapper.auto_upgrade!
 
-markov_chain = MetropolisHastingsMarkovChain.new
+cftp = CoupleFromThePast.new
 sample = NoConvergeSample.new
+sample_size = 10
+min_coupling_time = 5
 
 ampq = Bunny.new(ENV['RABBITMQ_URL'])
 ampq.start
@@ -25,19 +27,14 @@ end
   previous_node.crawl!
 
 while true
-  begin
-    current_node = markov_chain.next(previous_node)
-  rescue => e
-    p e.message
-    p previous_node
-    raise e
+  small_set = cft.aggregation_by_backward_coupling([previous_node], sample_size, min_coupling_time)
+  samples = cftp.cftp(-1, small_set, min_coupling_time)
+  samples.eac do |current_node|
+    puts "Sampled #{current_node}"
+    sample.save!(current_node) { |node| node.degree }
+    exchange.publish(current_node.id, type: 'new_samples', key: 'com.girih.samples')
+    previous_node = current_node
   end
-  p current_node.id
-  current_node.crawl! 
-  sample.save!(current_node) { |node| 0 }
-  puts "Sending message for node #{current_node.id}"
-  exchange.publish(current_node.id, type: 'new_samples', key: 'com.girih.samples')
-  previous_node = current_node
 end
 
 puts sample.expectation_value
