@@ -20,7 +20,7 @@ class Hashtag
   property :id, Serial
   property :node, Integer, min: 0, max: 2**32-1, index: true
   property :message_id, Integer, min: 0, max: 2**63-1
-  property :hashtag, String, index: true
+  property :hashtag, String, length: 255, index: true
   property :created_at, DateTime
   property :hashtag_time, DateTime
   property :hashtag_date, Date, index: true
@@ -44,7 +44,7 @@ class HashtagCount
 
   property :id, Serial
   property :date, Date, index: true
-  property :hashtag, String, index: true
+  property :hashtag, String, length: 255, index: true
   property :count, Integer
 end
 
