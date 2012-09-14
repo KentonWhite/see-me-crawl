@@ -30,7 +30,7 @@ end
 while true
   small_set = cftp.aggregation_by_backward_coupling([previous_node], sample_size, min_coupling_time)
   samples = cftp.cftp(-1, small_set, min_coupling_time)
-  samples.eac do |current_node|
+  samples.each do |current_node|
     puts "Sampled #{current_node}"
     sample.save!(current_node) { |node| node.degree }
     exchange.publish(current_node.id, type: 'new_samples', key: 'com.girih.samples')
