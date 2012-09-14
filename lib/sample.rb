@@ -7,7 +7,7 @@ class Sample
   include DataMapper::ChunkedQuery
   
   property :id,       Serial
-  property :node,     Integer, min: 0, max: 2**32, index: true
+  property :node,     Integer, min: 0, max: 2**32-1, index: true
   property :degree,   Integer
   property :value,    Float
   property :monitor,  Float
@@ -18,8 +18,8 @@ class Hashtag
   include DataMapper::Resource
   
   property :id, Serial
-  property :node, Integer, min: 0, max: 2**32, index: true
-  property :message_id, Integer, min: 0, max: 2**64-1
+  property :node, Integer, min: 0, max: 2**32-1, index: true
+  property :message_id, Integer, min: 0, max: 2**63-1
   property :hashtag, String, index: true
   property :created_at, DateTime
   property :hashtag_time, DateTime
@@ -30,8 +30,8 @@ class UnprocessedHashtag
   include DataMapper::Resource
   
   property :id, Serial
-  property :node, Integer, min: 0, max: 2**32, index: true
-  property :message_id, Integer, min: 0, max: 2**64-1
+  property :node, Integer, min: 0, max: 2**32-1, index: true
+  property :message_id, Integer, min: 0, max: 2**63-1
   property :hashtag, String, index: true
   property :created_at, DateTime
   property :hashtag_time, DateTime
@@ -61,8 +61,8 @@ class Mention
   include DataMapper::Resource
   
   property :id, Serial
-  property :node, Integer, min: 0, max: 2**32, index: true
-  property :message_id, Integer, min: 0, max: 2**64-1
+  property :node, Integer, min: 0, max: 2**32-1, index: true
+  property :message_id, Integer, min: 0, max: 2**63-1
   property :mention, String, index: true
   property :created_at, DateTime
   property :mention_time, DateTime
@@ -73,8 +73,8 @@ class UnprocessedMention
   include DataMapper::Resource
   
   property :id, Serial
-  property :node, Integer, min: 0, max: 2**32, index: true
-  property :message_id, Integer, min: 0, max: 2**64-1
+  property :node, Integer, min: 0, max: 2**32-1, index: true
+  property :message_id, Integer, min: 0, max: 2**63-1
   property :mention, String, index: true
   property :created_at, DateTime
   property :mention_time, DateTime
@@ -102,8 +102,8 @@ end
 class Message
   include DataMapper::Resource
 
-  property :id, Integer, min: 0, max: 2**64-1, key: true, unique: true
-  property :node, Integer, min: 0, max: 2**32, index: true
+  property :id, Integer, min: 0, max: 2**63-1, key: true, unique: true
+  property :node, Integer, min: 0, max: 2**32-1, index: true
   property :created_at, DateTime
   property :message_time, DateTime  
   property :message_date, Date, index: true  
@@ -112,8 +112,8 @@ end
 class UnprocessedMessage
   include DataMapper::Resource
 
-  property :id, Integer, min: 0, max: 2**64-1, key: true, unique: true
-  property :node, Integer, min: 0, max: 2**32, index: true
+  property :id, Integer, min: 0, max: 2**63-1, key: true, unique: true
+  property :node, Integer, min: 0, max: 2**32-1, index: true
   property :created_at, DateTime
   property :message_time, DateTime  
   property :message_date, Date, index: true  
