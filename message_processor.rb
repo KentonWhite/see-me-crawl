@@ -17,6 +17,7 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
     case metadata.type
     when "new_samples"
       puts "Process new node #{node}"
+      STDOUT.flush
       unless UnprocessedMessage.count(node: node) > 0 
         node = HashtagTwitterNode.new(node.to_i)
         node.check_hashtag
@@ -29,4 +30,5 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
   end
   
   puts "Ready to listen to messages queue"
+  STDOUT.flush
 end

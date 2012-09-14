@@ -43,6 +43,7 @@ class TwitterNode < BaseNode
     
   def client
     puts "calling Twitter" 
+    STDOUT.flush
     @client ||= new_client
     @client.sample
   end 

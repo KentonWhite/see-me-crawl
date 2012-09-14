@@ -102,6 +102,7 @@ class BaseNode
         case type
         when :friends
           puts "Update Edges PutAttribute x #{new_edges.size}"
+          STDOUT.flush
           new_edges.each_slice(100) do |n|
             values = n.inject([]) { |values, n| values << "(#{id}, #{n})"}
             sql = "INSERT INTO edges (n1, n2) VALUES #{values.join(', ')}"
@@ -115,6 +116,7 @@ class BaseNode
           end
         when :followers
           puts "Update Edges PutAttribute x #{new_edges.size}"
+          STDOUT.flush
           new_edges.each_slice(100) do |n|
             values = n.inject([]) { |values, n| values << "(#{n}, #{id})"}
             sql = "INSERT INTO edges (n1, n2) VALUES #{values.join(', ')}"

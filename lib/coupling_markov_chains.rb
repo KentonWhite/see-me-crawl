@@ -122,6 +122,7 @@ class CouplingMarkovChains < MetropolisHastingsMarkovChain
      begin
        new_node = nextRWMH!(x, u, t, false)  
        puts "Selected #{new_node.id}" 
+       STDOUT.flush
 
        #new_node = nextRWMH(x, u, t, false)							
      rescue => e
