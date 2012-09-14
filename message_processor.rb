@@ -59,6 +59,35 @@ def process_hashtags(hashtags)
   STDOUT.flush
 end
 
+def process_mentions(mentions)
+  counter = TagCounter.new
+
+  if mentions.count > 1000 then
+    puts "Processing #{mentions.count} mentions"
+    STDOUT.flush
+  
+    mentions.each do |m|
+      counter.add(m.mention_date, m.mention, m.node)
+      attrs = m.attributes
+      attrs.delete(:id)
+      Mention.create(attrs)    
+      m.destroy
+    end
+  
+    counter.each do |date, tag, nodes|
+      mention_count = MentionCount.first_or_new({date: date, mention: tag}, {count: 0})
+      mention_count.count += nodes.count
+      mention_mh_count = MentionMhCount.first_or_new({date: date, mention: tag}, {count: 0})
+      mention_mh_count.count += Sample.count(node: nodes.to_a)
+      mention_count.save
+      mention_mh_count.save
+    end
+    puts "Finished processing mentions"
+    STDOUT.flush
+  end
+  
+end
+
 DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 
@@ -81,6 +110,8 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
         process_messages(messages) if messages.count > 1000
         hashtags = UnprocessedHashtag.all
         process_hashtags(hashtags) if hashtags.count > 1000
+        mentions = UnprocessedMention.all
+        process_mentions(mentions) if mentions.count > 1000
 
       end
     else
