@@ -115,9 +115,6 @@ class CoupleFromThePast < CouplingMarkovChains
       results = results.merge(curr_results)
 		
       p "#{results.keys}"
-      results.keys.each do |r|
-        state = NonTrivialState.first_or_create(node: r)
-      end
     end until results.size >= m or (results.size > init_states.size and results.size <= curr_size)
     results.values
   end
