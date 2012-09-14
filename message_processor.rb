@@ -7,7 +7,6 @@ require 'amqp'
 def process_messages(messages)
   counter = TagCounter.new
   
-  if messages.count > 1000 then
     puts "Processing #{messages.count} messages"
     STDOUT.flush
   
@@ -22,14 +21,10 @@ def process_messages(messages)
     counter.each do |date, tag, nodes|
       message_count = MessageCount.first_or_new({date: date}, {count: 0})
       message_count.count += nodes.count
-      message_mh_count = MessageMhCount.first_or_new({date: date}, {count: 0})
-      message_mh_count.count += Sample.count(node: nodes.to_a)
       message_count.save
-      message_mh_count.save
     end
     puts "Finished processing messages"
     STDOUT.flush
-  end
   
 end
 
@@ -50,10 +45,7 @@ def process_hashtags(hashtags)
   counter.each do |date, tag, nodes|
     hashtag_count = HashtagCount.first_or_new({date: date, hashtag: tag}, {count: 0})
     hashtag_count.count += nodes.count
-    hashtag_mh_count = HashtagMhCount.first_or_new({date: date, hashtag: tag}, {count: 0})
-    hashtag_mh_count.count += Sample.count(node: nodes.to_a)
     hashtag_count.save
-    hashtag_mh_count.save
   end
   puts "Finished processing hashtags"
   STDOUT.flush
@@ -62,7 +54,6 @@ end
 def process_mentions(mentions)
   counter = TagCounter.new
 
-  if mentions.count > 1000 then
     puts "Processing #{mentions.count} mentions"
     STDOUT.flush
   
@@ -77,14 +68,10 @@ def process_mentions(mentions)
     counter.each do |date, tag, nodes|
       mention_count = MentionCount.first_or_new({date: date, mention: tag}, {count: 0})
       mention_count.count += nodes.count
-      mention_mh_count = MentionMhCount.first_or_new({date: date, mention: tag}, {count: 0})
-      mention_mh_count.count += Sample.count(node: nodes.to_a)
       mention_count.save
-      mention_mh_count.save
     end
     puts "Finished processing mentions"
     STDOUT.flush
-  end
   
 end
 
@@ -106,12 +93,9 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
       unless UnprocessedMessage.count(node: node) > 0 
         node = HashtagTwitterNode.new(node.to_i)
         node.check_hashtag
-        messages = UnprocessedMessage.all
-        process_messages(messages) if messages.count > 1000
-        hashtags = UnprocessedHashtag.all
-        process_hashtags(hashtags) if hashtags.count > 1000
-        mentions = UnprocessedMention.all
-        process_mentions(mentions) if mentions.count > 1000
+        process_messages(node.messages)
+        process_hashtags(node.hashtags)
+        process_mentions(node.mentions)
 
       end
     else

@@ -4,8 +4,17 @@ require 'active_support/core_ext'
 
 class HashtagTwitterNode < TwitterNode
   
+  attr_reader :messages, :hashtags, :mentions
+    
   @@hashtag_regex = /#/i
-
+  
+  def initialize(id)
+    super(id)
+    @messages = []
+    @hashtags = []
+    @mentions = []
+  end
+  
   def hashtag?
     @hashtag ||= check_hashtag
   end
@@ -21,21 +30,22 @@ class HashtagTwitterNode < TwitterNode
     statuses.each do |s|
       next if Message.count(id: s.id) > 0 || UnprocessedMessage.count(id: s.id) > 0
       begin
-        UnprocessedMessage.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
+        m = Message.create(id: s.id, node: id, message_time: s.created_at, message_date: s.created_at.to_date)
       rescue DataObjects::SQLError => e
         p e.message
         retry
       end
+      @messages << m
       if s.text =~ @@hashtag_regex then
         hashtag_found = 1
       end
       hastags = s.text.scan(/[#]\w+/i)
       hastags.each do |h|
-        UnprocessedHashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
+        @hashtags << Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
       end
       mentions = s.text.scan(/[\@]\w+/i)
       mentions.each do |m|
-        UnprocessedMention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
+        @mentions << Mention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
       end
     end
     return hashtag_found
