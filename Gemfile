@@ -1,11 +1,6 @@
 source :rubygems
 
-gem 'sqlite3-ruby', '~>1.3.0', :require => 'sqlite3'
-gem 'mysql'
-# gem 'dm-adapter-simpledb', '~>1.5.0'
-# gem 'do_sqlite3', '~>0.10.0'
-gem 'dm-sqlite-adapter', '~>1.2.0'
-gem 'dm-mysql-adapter', '~>1.2.0'
+gem 'dm-postgres-adapter', '~>1.2.0'
 gem 'data_mapper', '~> 1.0'
 gem 'statsample', '~>1.1.0' 
 gem 'twitter', '~>1.7.0'
@@ -32,7 +27,7 @@ group :devlopment do
   gem 'vcr', '~>1.11.0'
 
   if RUBY_PLATFORM.downcase.include?("darwin")
-    gem 'rb-fsevent', '~>0.4.0', :require => false
-    gem 'growl_notify', '~>0.0.0' 
+    # gem 'rb-fsevent', '~>0.4.0', :require => false
+    # gem 'growl_notify', '~>0.0.0' 
   end
 end
