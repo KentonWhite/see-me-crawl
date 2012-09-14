@@ -9,7 +9,7 @@ FakeWeb.allow_net_connect = false
 
 RSpec.configure do |config|
  config.before(:all) do
-    DataMapper.setup(ENV['DATABASE_URL']) 
+    DataMapper.setup(:default ENV['DATABASE_URL']) 
     DataMapper.auto_migrate!
   end
 

@@ -5,7 +5,7 @@ require './lib/entropy.rb'
 
 require 'bunny'
 
-DataMapper.setup(ENV['DATABASE_URL'])
+DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 DataMapper.auto_upgrade!
 

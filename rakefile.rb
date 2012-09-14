@@ -5,7 +5,7 @@ require 'dm-aggregates'
 log = Logger.new(STDOUT)
 log.level = Logger::INFO
 
-DataMapper.setup(:default, adapter: 'mysql', database: 'sample', user: 'root')
+DataMapper.setup(:default, ENV['DATABASE_URL'])
 DataMapper.auto_upgrade!
 
 task :cron do

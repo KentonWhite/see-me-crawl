@@ -3,7 +3,7 @@ require './lib/hashtag_twitter_node.rb'
 
 require 'amqp'
 
-DataMapper.setup(ENV['DATABASE_URL'])
+DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 
 DataMapper.auto_upgrade!
