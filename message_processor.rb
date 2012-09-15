@@ -12,10 +12,7 @@ def process_messages(messages)
   
     messages.each do |m|
       counter.add(m.message_date, 'message', m.node)
-      attrs = m.attributes
-      attrs.delete(:id)
-      Message.create(attrs)    
-      m.destroy
+      m.save!   
     end
   
     counter.each do |date, tag, nodes|
@@ -37,15 +34,27 @@ def process_hashtags(hashtags)
   hashtags.each do |h|
     counter.add(h.hashtag_date, h.hashtag, h.node)
     attrs = h.attributes
-    attrs.delete(:id)
-    Hashtag.create(attrs)    
-    h.destroy
+    begin    
+      h.save!
+    rescue e
+      p e.message
+      puts "error creating hashtag:"   
+      p h
+      next
+    end
   end
   
   counter.each do |date, tag, nodes|
     hashtag_count = HashtagCount.first_or_new({date: date, hashtag: tag}, {count: 0})
-    hashtag_count.count += nodes.count
-    hashtag_count.save
+      hashtag_count.count += nodes.count
+    begin
+      hashtag_count.save
+    rescue e
+      p e.message
+      puts "error creating hashtag_count:"
+      p hashtag_count
+      next
+    end
   end
   puts "Finished processing hashtags"
   STDOUT.flush
@@ -59,10 +68,7 @@ def process_mentions(mentions)
   
     mentions.each do |m|
       counter.add(m.mention_date, m.mention, m.node)
-      attrs = m.attributes
-      attrs.delete(:id)
-      Mention.create(attrs)    
-      m.destroy
+      m.save!   
     end
   
     counter.each do |date, tag, nodes|
