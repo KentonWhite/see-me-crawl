@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'dm-postgres-adapter', '~>1.2.0'
+gem 'dm-pg-types', :git => 'git://github.com/svs/dm-pg-types.git'
 gem 'data_mapper', '~> 1.0'
 gem 'statsample', '~>1.1.0' 
 gem 'twitter', '~>1.7.0'
@@ -15,7 +16,7 @@ gem 'bunny'
 
 
 group :devlopment do
-  gem 'rspec', '~>2.5.0'
+  gem 'rspec'
   gem 'guard', '~>0.8.0'
   gem 'rb-inotify', '~>0.8.0', :require => false
   gem 'rb-fchange', '~>0.0.0', :require => false

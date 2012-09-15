@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'dm-pg-types'
 
 class Node
   include DataMapper::Resource
@@ -13,7 +14,7 @@ end
 
 class Edge
   include DataMapper::Resource
-  property :id,  Serial, min: 0, max: 2**63-1
-  property :n1,  Integer, min: 0, max: 2**32-1, index: true
-  property :n2,  Integer, min: 0, max: 2**32-1, index: true    
+  property :id,  Integer, min: 0, max: 2**32-1, key: true
+  property :friends, DecimalArray, precision: 20, scale: 10
+  property :followers, DecimalArray, precision: 20, scale: 10
 end     

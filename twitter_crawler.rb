@@ -7,7 +7,7 @@ require './lib/couple_from_the_past.rb'
 require 'bunny'
 
 DataMapper.setup(:default, ENV['DATABASE_URL'])
-
+DataMapper.finalize
 DataMapper.auto_upgrade!
 
 cftp = CoupleFromThePast.new

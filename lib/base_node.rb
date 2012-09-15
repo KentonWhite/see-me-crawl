@@ -27,7 +27,7 @@ class BaseNode
   attr_reader :id, :in_degree, :out_degree, :visited_at, :crawled_at, :private
   
   def initialize(id) 
-    @id = id
+    @id = id.to_int
     # columns.each { |col| self.instance_eval "def #{col}; @#{col}; end" } 
     populate_from_db
   end 
@@ -41,11 +41,11 @@ class BaseNode
   end
   
   def friends
-    @friends ||= (puts "Friends SelectGet"; Edge.all(n1: id).map { |e| e.n2 })
+    @friends ||= (puts "Friends SelectGet"; Edge.get(id).friends)
   end
   
   def followers
-    @followers ||= (puts "Followers SelectGet"; Edge.all(n2: id).map { |e| e.n1 })    
+    @followers ||= (puts "Followers SelectGet"; Edge.get(id).followers)   
   end
   
   def private?
@@ -97,40 +97,12 @@ class BaseNode
   end
   
   def update_edges(edges) 
-    edges.each do |type, list|
-      new_edges = Set.new(list - self.send(type))
-        case type
-        when :friends
-          puts "Update Edges PutAttribute x #{new_edges.size}"
-          STDOUT.flush
-          new_edges.each_slice(100) do |n|
-            values = n.inject([]) { |values, n| values << "(#{id}, #{n})"}
-            sql = "INSERT INTO edges (n1, n2) VALUES #{values.join(', ')}"
-            adapter = DataMapper.repository(:default).adapter 
-            begin
-              adapter.execute(sql)
-            rescue DataObjects::IntegrityError => e
-              puts "Error writing edge (#{id}, #{n})"
-              puts "Skipping"
-            end
-          end
-        when :followers
-          puts "Update Edges PutAttribute x #{new_edges.size}"
-          STDOUT.flush
-          new_edges.each_slice(100) do |n|
-            values = n.inject([]) { |values, n| values << "(#{n}, #{id})"}
-            sql = "INSERT INTO edges (n1, n2) VALUES #{values.join(', ')}"
-            adapter = DataMapper.repository(:default).adapter 
-            begin 
-              adapter.execute(sql)
-            rescue DataObjects::IntegrityError => e
-              puts "Error writing edge (#{n}, #{id})"
-              puts "Skipping"
-            end              
-          end
-        end
-        self.instance_variable_set("@#{type}", list)
-    end 
+    puts "Updating edges (friends: #{edges[:friends].size}, followers: #{edges[:followers].size}...)"
+    db_edges = Edge.first_or_new(id: id)
+    db_edges.friends = edges[:friends]
+    db_edges.followers = edges[:followers]
+    db_edges.save!
+    puts "Done updating edges"
   end
 
   private

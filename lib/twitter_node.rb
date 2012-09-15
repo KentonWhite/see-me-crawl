@@ -63,6 +63,7 @@ class TwitterNode < BaseNode
   
   def populate_from_twitter
     begin
+      puts "Getting information for node #{id}"
       user = client.user(id) 
       @in_degree = user.followers_count
       @out_degree = user.friends_count
