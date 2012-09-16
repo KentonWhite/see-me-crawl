@@ -1,12 +1,12 @@
-require './lib/sample.rb'
-require './lib/tag_counter'
-require 'logger'
-require 'dm-aggregates'
-log = Logger.new(STDOUT)
-log.level = Logger::INFO
-
-DataMapper.setup(:default, ENV['DATABASE_URL'])
-DataMapper.auto_upgrade!
+# require './lib/sample.rb'
+# require './lib/tag_counter'
+# require 'logger'
+# require 'dm-aggregates'
+# log = Logger.new(STDOUT)
+# log.level = Logger::INFO
+# 
+# DataMapper.setup(:default, ENV['DATABASE_URL'])
+# DataMapper.auto_upgrade!
 
 task :cron do
   log.info("Start summaries")
@@ -18,6 +18,12 @@ task :cron do
     summary.save
   end
   log.info("End summaries")
+end
+
+task :deploy_heroku do
+  (1..8).each do |i|
+    puts `git push --force git@heroku.com:cftp-#{"%02d" % i}.git hashtags:master`
+  end
 end
 
 task :migrate_to_counts do
