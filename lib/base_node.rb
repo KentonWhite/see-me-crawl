@@ -98,11 +98,13 @@ class BaseNode
   
   def update_edges(edges) 
     puts "Updating edges (friends: #{edges[:friends].size}, followers: #{edges[:followers].size}...)"
+    STDOUT.flush
     db_edges = Edge.first_or_new(id: id)
     db_edges.friends = edges[:friends]
     db_edges.followers = edges[:followers]
     db_edges.save!
     puts "Done updating edges"
+    STDOUT.flush
   end
 
   private
