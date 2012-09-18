@@ -4,7 +4,7 @@ require 'active_support/core_ext'
 
 class HashtagTwitterNode < TwitterNode
   
-  attr_reader :messages, :hashtags, :mentions
+  attr_reader :messages, :hashtags, :mentions, :tags
     
   @@hashtag_regex = /#/i
   
@@ -13,6 +13,7 @@ class HashtagTwitterNode < TwitterNode
     @messages = []
     @hashtags = []
     @mentions = []
+    @tags = []
   end
   
   def hashtag?
@@ -42,10 +43,12 @@ class HashtagTwitterNode < TwitterNode
       hastags = s.text.scan(/[#]\w+/i)
       hastags.each do |h|
         @hashtags << Hashtag.create(node: id, message_id: s.id, hashtag: h.downcase, hashtag_time: s.created_at, hashtag_date: s.created_at.to_date)
+        @tags << Tag.create(node: id, message_id: s.id, tag: h[1..-1].downcase, time: s.created_at, date: s.created_at.to_date)
       end
       mentions = s.text.scan(/[\@]\w+/i)
       mentions.each do |m|
         @mentions << Mention.create(node: id, message_id: s.id, mention: m.downcase, mention_time: s.created_at, mention_date: s.created_at.to_date)
+        @tags << Tag.create(node: id, message_id: s.id, tag: m[1..-1].downcase, time: s.created_at, date: s.created_at.to_date)
       end
     end
     return hashtag_found

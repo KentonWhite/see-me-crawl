@@ -4,6 +4,10 @@ require './lib/tag_counter'
 
 require 'amqp'
 
+# Enable unbuffered output
+STDOUT.sync = true
+
+
 def process_messages(messages)
   counter = TagCounter.new
   
@@ -81,6 +85,25 @@ def process_mentions(mentions)
   
 end
 
+def process_tags(tags)
+  counter = TagCounter.new
+
+    puts "Processing #{tags.count} tags"
+  
+    tags.each do |t|
+      counter.add(t.date, t.tag, t.node)
+      t.save!   
+    end
+  
+    counter.each do |date, tag, nodes|
+      tag_count = TagCount.first_or_new({date: date, tag: tag}, {count: 0})
+      tag_count.count += nodes.count
+      tag_count.save
+    end
+    puts "Finished processing tags"
+  
+end
+
 DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 
@@ -102,7 +125,7 @@ AMQP.start('amqp://lcpdyzjs:nko1XmnZfRul4Hza@gqezbdhq.heroku.srs.rabbitmq.com:21
         process_messages(node.messages)
         process_hashtags(node.hashtags)
         process_mentions(node.mentions)
-
+        process_tags(node.tags)
       end
     else
       puts "Unknown message type #{metadata.type}"

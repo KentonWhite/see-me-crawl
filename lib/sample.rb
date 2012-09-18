@@ -14,6 +14,27 @@ class Sample
   property :created_at, DateTime
 end 
 
+class Tag
+  include DataMapper::Resource
+  
+  property :id, Serial
+  property :node, Integer, min: 0, max: 2**32-1, index: true
+  property :message_id, Integer, min: 0, max: 2**63-1
+  property :tag, String, length: 255, index: true
+  property :created_at, DateTime
+  property :time, DateTime
+  property :date, Date, index: true
+end
+
+class TagCount
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :date, Date, index: true
+  property :tag, String, length: 255, index: true
+  property :count, Integer
+end
+
 class Hashtag
   include DataMapper::Resource
   
